@@ -3,7 +3,7 @@ import './App.css';
 import { useState } from 'react';
 
 function Square({value, onSquareClick}) {
-
+  // const [squareValue, setSquareValue] = useState(Values.EMPTY);
   return (
     <button className="square" onClick={onSquareClick}>
       {value} 
@@ -12,28 +12,50 @@ function Square({value, onSquareClick}) {
 }
 
 function Board() {
+  const Values = Object.freeze({
+    EMPTY: " ",
+    X: "x",
+    QUEEN: "Q",
+  });
+
   const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(36).fill(null));
+  const [squares, setSquares] = useState(Array(36).fill(Values.EMPTY));
   const winner = calculateWinner(squares);
   let status;
-  if (winner) {
-    status = "Winner: " + winner;
-  } else {
-    status = "Next player: " + (xIsNext? "X" : "O");
-  }
+  // if (winner) {
+  //   status = "Winner: " + winner;
+  // } else {
+  //   status = "Next player: " + (xIsNext? "X" : "O");
+  // }
 
   function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) {
-      return;
-    }
+    // if (squares[i] || calculateWinner(squares)) {
+    //   return;
+    // }
     const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "X";
-    } else {
-      nextSquares[i] = "O";
-    }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    // use switch statement to get current state of square and generate new
+    switch(nextSquares[i]) {
+      case Values.EMPTY: 
+        nextSquares[i] = Values.X;
+        break;
+      case Values.X: 
+        nextSquares[i] = Values.QUEEN;
+        break;
+      case Values.QUEEN:
+        nextSquares[i] = Values.EMPTY;
+        break;
+      default:
+        alert("Oops! default in switch case");
+        break;
+    };
+
+    // if (xIsNext) {
+    //   nextSquares[i] = "X";
+    // } else {
+    //   nextSquares[i] = "O";
+    // }
+    setSquares(nextSquares); // next state of squares array
+    // setXIsNext(!xIsNext);
   }
 
   function calculateWinner(squares) {
