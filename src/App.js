@@ -23,13 +23,40 @@ function Board() {
       </button>
     )
   }
-  const boardLength = 6;
+  const boardLength = 8;
   const [squares, setSquares] = useState(Array(boardLength ** 2).fill(Values.EMPTY));
+  const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
+
   const winner = calculateWinner(squares);
   let status = "";
   if (winner) {
     status = "You win!";
   };
+
+  function handleClickXY(r, c) {
+    const nextSquares = [];
+    for (let row of squaresXY) {
+      nextSquares.push(row.slice());
+    }
+
+    // use switch statement to get current state of square and generate new
+    switch(nextSquares[r][c]) {
+      case Values.EMPTY: 
+        nextSquares[r][c] = Values.X;
+        break;
+      case Values.X: 
+        nextSquares[r][c] = Values.QUEEN;
+        // handleAutomaticX(r,c);
+        break;
+      case Values.QUEEN:
+        nextSquares[r][c] = Values.EMPTY;
+        break;
+      default:
+        alert("Oops! default in switch case");
+        break;
+    };
+    setSquaresXY(nextSquares); // next state of squares array
+  }
 
   function handleClick(i) {
     if (calculateWinner(squares)) {
@@ -70,7 +97,6 @@ function Board() {
       case Values.X: 
         nextSquares[i] = Values.QUEEN;
         handleAutomaticX(i);
-
         break;
       case Values.QUEEN:
         nextSquares[i] = Values.EMPTY;
@@ -108,54 +134,16 @@ function Board() {
   return (
     <>
       <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} row={0} col={0} region={1} onSquareClick={() => handleClick(0)} /> 
-        <Square value={squares[1]} row={0} col={1} region={1} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} row={0} col={2} region={3} onSquareClick={() => handleClick(2)} />
-        <Square value={squares[3]} row={0} col={3} region={3} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} row={0} col={4} region={4} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} row={0} col={5} region={4} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} row={1} col={0} region={1} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} row={1} col={1} region={2} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} row={1} col={2} region={3} onSquareClick={() => handleClick(8)} />
-        <Square value={squares[9]} row={1} col={3} region={4} onSquareClick={() => handleClick(9)} />
-        <Square value={squares[10]} row={1} col={4} region={4} onSquareClick={() => handleClick(10)} />
-        <Square value={squares[11]} row={1} col={5} region={5} onSquareClick={() => handleClick(11)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[12]} row={2} col={0} region={1} onSquareClick={() => handleClick(12)} />
-        <Square value={squares[13]} row={2} col={1} region={2} onSquareClick={() => handleClick(13)} />
-        <Square value={squares[14]} row={2} col={2} region={3} onSquareClick={() => handleClick(14)} />
-        <Square value={squares[15]} row={2} col={3} region={3} onSquareClick={() => handleClick(15)} />
-        <Square value={squares[16]} row={2} col={4} region={3} onSquareClick={() => handleClick(16)} />
-        <Square value={squares[17]} row={2} col={5} region={5} onSquareClick={() => handleClick(17)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[18]} row={3} col={0} region={3} onSquareClick={() => handleClick(18)} />
-        <Square value={squares[19]} row={3} col={1} region={3} onSquareClick={() => handleClick(19)} />
-        <Square value={squares[20]} row={3} col={2} region={3} onSquareClick={() => handleClick(20)} />
-        <Square value={squares[21]} row={3} col={3} region={3} onSquareClick={() => handleClick(21)} />
-        <Square value={squares[22]} row={3} col={4} region={3} onSquareClick={() => handleClick(22)} />
-        <Square value={squares[23]} row={3} col={5} region={5} onSquareClick={() => handleClick(23)} />
-      </div>      
-      <div className="board-row">
-        <Square value={squares[24]} row={4} col={0} region={3} onSquareClick={() => handleClick(24)} />
-        <Square value={squares[25]} row={4} col={1} region={3} onSquareClick={() => handleClick(25)} />
-        <Square value={squares[26]} row={4} col={2} region={3} onSquareClick={() => handleClick(26)} />
-        <Square value={squares[27]} row={4} col={3} region={3} onSquareClick={() => handleClick(27)} />
-        <Square value={squares[28]} row={4} col={4} region={3} onSquareClick={() => handleClick(28)} />
-        <Square value={squares[29]} row={4} col={5} region={6} onSquareClick={() => handleClick(29)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[30]} row={5} col={0} region={3} onSquareClick={() => handleClick(30)} />
-        <Square value={squares[31]} row={5} col={1} region={3} onSquareClick={() => handleClick(31)} />
-        <Square value={squares[32]} row={5} col={2} region={3} onSquareClick={() => handleClick(32)} />
-        <Square value={squares[33]} row={5} col={3} region={6} onSquareClick={() => handleClick(33)} />
-        <Square value={squares[34]} row={5} col={4} region={6} onSquareClick={() => handleClick(34)} />
-        <Square value={squares[35]} row={5} col={5} region={6} onSquareClick={() => handleClick(35)} />
-      </div>
+        {squaresXY.map((row, r) => (
+          <div className="board-row">
+            {row.map((col, c) => (
+              <Square value={squaresXY[r][c]} row={r} col={c} region={1} onSquareClick={() => handleClickXY(r, c)} /> 
+
+            ))}
+          </div>
+
+        ))}
+       
       <ResetButton />
     </>
   ) 
