@@ -55,7 +55,7 @@ function Board() {
   }
 
   function calculateWinner(squares) {
-    // confirm correct number of Queens
+    // first confirm correct number of Queens
     let queenCounter = 0;
     for (let element of squares) {
       if (element == "Q") {
@@ -65,17 +65,11 @@ function Board() {
     if (queenCounter != boardLength) {
       return;
     }
-    const solution = 
-      ["Q", " ", " ", " ", " ", " ",
-      " ", " ", " ", "Q", " ", " ",
-      " ", "Q", " ", " ", " ", " ",
-      " ", " ", " ", " ", " ", "Q",
-      " ", " ", "Q", " ", " ", " ",
-      " ", " ", " ", " ", "Q", " "];
-    for (let i = 0; i < solution.length; i++) {
-      // const [a, b, c, d, e, f] = lines[i];
-      let char;
-      if (solution[i] != squares[i]) {
+    
+    // if correct number of queens, compare their locations with the solution
+    const solutionIndices = [0, 9, 13, 23, 26, 34];
+    for (let i of solutionIndices) {
+      if (squares[i] !== "Q") {
         return false;
       }
     }
