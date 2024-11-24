@@ -12,9 +12,9 @@ function Square({value, region, row, col, hasManualX, onSquareClick}) {
 function Board() {
   const Values = Object.freeze({
     EMPTY: " ",
-    AUTOX: "x",
+    AUTOX: "X",
     QUEEN: "Q",
-    MANUALX: "X",
+    MANUALX: "x",
   });
 
   function ResetButton() {
@@ -55,6 +55,42 @@ function Board() {
       return;
     }
 
+    // helper function to implement automatic x's when adding a queen
+    function handleAddAutoX(r, c) { 
+      // r, c is row and col of queen being added. Use to calculate all x's to add automatically
+      // alert(nextSquares.length);
+      // do row
+      for (let i = 0; i < boardLength; i++) {
+        if (nextSquares[r][i] === Values.EMPTY) {
+          nextSquares[r][i] = Values.AUTOX;
+        };
+        // for (let j = 0; j < boardLength; j++) {
+        //   if () {
+        //     if () {
+        //       nextSquares[j] = Values.X;
+        //     } else if ((j >= boardLength*fl) && (j < boardLength*(fl+1))) {
+        //       nextSquares[j] = Values.X;
+        //     } else if (j === ind + boardLength + 1) {
+        //       nextSquares[j] = Values.X;
+        //     } else if (j === ind - boardLength - 1) {
+        //       nextSquares[j] = Values.X;
+        //     } else if (j === ind - boardLength + 1) {
+        //       nextSquares[j] = Values.X;
+        //     } else if (j === ind + boardLength - 1) {
+        //       nextSquares[j] = Values.X;
+        //     } else {
+        //       nextSquares[j] = nextSquares[j];
+        //     }
+        //   };
+  
+        // };
+      };
+      // do column
+      
+
+      // do halo
+    };
+
     const nextSquares = [];
     for (let row of squaresXY) {
       nextSquares.push(row.slice());
@@ -68,7 +104,7 @@ function Board() {
       case Values.AUTOX: 
       case Values.MANUALX:
         nextSquares[r][c] = Values.QUEEN;
-        // handleAutomaticX(r,c);
+        handleAddAutoX(r,c);
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
