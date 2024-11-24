@@ -1,9 +1,7 @@
-// import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
 function Square({value, region, onSquareClick}) {
-  // const [squareValue, setSquareValue] = useState(Values.EMPTY);
   return (
     <button className={`square region${region}`} onClick={onSquareClick}>
       {value} 
@@ -18,20 +16,20 @@ function Board() {
     QUEEN: "Q",
   });
 
+  function ResetButton() {
+    return (
+      <button className={''} onClick={() => setSquares(Array(36).fill(Values.EMPTY))}>
+        Reset
+      </button>
+    )
+  }
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(36).fill(Values.EMPTY));
-  const winner = calculateWinner(squares);
-  let status;
-  // if (winner) {
-  //   status = "Winner: " + winner;
-  // } else {
-  //   status = "Next player: " + (xIsNext? "X" : "O");
-  // }
 
   function handleClick(i) {
-    // if (squares[i] || calculateWinner(squares)) {
-    //   return;
-    // }
+    if (calculateWinner(squares)) {
+      return;
+    }
     const nextSquares = squares.slice();
     // use switch statement to get current state of square and generate new
     switch(nextSquares[i]) {
@@ -48,50 +46,29 @@ function Board() {
         alert("Oops! default in switch case");
         break;
     };
-
-    // if (xIsNext) {
-    //   nextSquares[i] = "X";
-    // } else {
-    //   nextSquares[i] = "O";
-    // }
     setSquares(nextSquares); // next state of squares array
-    // setXIsNext(!xIsNext);
   }
 
   function calculateWinner(squares) {
-    const lines = [
-      [0, 1, 2, 3, 4, 5],
-      [6, 7, 8, 9, 10, 11],
-      [12, 13, 14, 15, 16, 17],
-      [18, 19, 20, 21, 22, 23],
-      [24, 25, 26, 27, 28, 29],
-      [30, 31, 32, 33, 34, 35],
-      [0, 6, 12, 18, 24, 30],
-      [1, 7, 13, 19, 25, 31],
-      [2, 8, 14, 20, 26, 32],
-      [3, 9, 15, 21, 27, 33],
-      [4, 10, 16, 22, 28, 34],
-      [5, 11, 17, 23, 29, 35],
-      [0, 7, 14, 21, 28, 35],
-      [5, 10, 15, 20, 25, 30],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c, d, e, f] = lines[i];
-      if (squares[a] 
-        && squares[a] === squares[b] 
-        && squares[a] === squares[c] 
-        && squares[a] === squares[d]
-        && squares[a] === squares[e]
-        && squares[a] === squares[f]) {
-        return squares[a];
+    const solution = 
+      ["Q", " ", " ", " ", " ", " ",
+      " ", " ", " ", "Q", " ", " ",
+      " ", "Q", " ", " ", " ", " ",
+      " ", " ", " ", " ", " ", "Q",
+      " ", " ", "Q", " ", " ", " ",
+      " ", " ", " ", " ", "Q", " "];
+    for (let i = 0; i < solution.length; i++) {
+      // const [a, b, c, d, e, f] = lines[i];
+      if (solution[i] != squares[i]) {
+        return false;
       }
     }
-    return null;
+    alert("winner!");
+    return true;
   }
 
   return (
     <>
-      <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} region={1} onSquareClick={() => handleClick(0)} /> 
         <Square value={squares[1]} region={1} onSquareClick={() => handleClick(1)} />
@@ -140,7 +117,7 @@ function Board() {
         <Square value={squares[34]} region={6} onSquareClick={() => handleClick(34)} />
         <Square value={squares[35]} region={6} onSquareClick={() => handleClick(35)} />
       </div>
-
+      <ResetButton />
     </>
   ) 
 }
