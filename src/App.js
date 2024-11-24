@@ -18,7 +18,7 @@ function Board() {
 
   function ResetButton() {
     return (
-      <button className={''} onClick={() => setSquares(Array(36).fill(Values.EMPTY))}>
+      <button className={'reset'} onClick={() => setSquares(Array(36).fill(Values.EMPTY))}>
         Reset
       </button>
     )
@@ -68,7 +68,6 @@ function Board() {
         return false;
       }
     }
-    // alert("winner!");
     return true;
   }
 
