@@ -101,6 +101,55 @@ function Board() {
         }
       }
     };
+// *********** 
+    // helper function to remove automatic X's from around queen when queen is removed
+    function handleRemoveAutoX(r, c) {
+            // r, c is row and col of queen being removed. Use to calculate all X's to remove automatically
+            for (let i = 0; i < boardLength; i++) {
+              // do row
+              if (nextSquares[r][i] === Values.AUTOX) {
+                  nextSquares[r][i] = Values.EMPTY;
+              };
+              // do column
+              if (nextSquares[i][c] === Values.AUTOX) {
+                  nextSquares[i][c] = Values.EMPTY;
+              };
+              // do halo
+              // TODO add helper function to do make doing halo more efficient
+              if (((r-1) >= 0) && ((c-1) >= 0)) {
+                if (nextSquares[r-1][c-1] === Values.AUTOX) { // upper left 
+                nextSquares[r-1][c-1] = Values.EMPTY;
+                };
+              };
+              if (((r-1) >= 0) && ((c+1) < boardLength)) {
+                if (nextSquares[r-1][c+1] === Values.AUTOX) { // upper right 
+                nextSquares[r-1][c+1] = Values.EMPTY;
+                };
+              };
+              if (((r+1) < boardLength) && ((c-1) >= 0)) {
+                if (nextSquares[r+1][c-1] === Values.AUTOX) { // lower left  
+                nextSquares[r+1][c-1] = Values.EMPTY;
+                };
+              };
+              if (((r+1) < boardLength) && ((c+1) < boardLength)) {
+                if ((nextSquares[r+1][c+1]) === Values.AUTOX) { // lower right 
+                  nextSquares[r+1][c+1] = Values.EMPTY;
+                };
+              };
+            };
+            // do region
+            const reg = regions[r][c];
+            for (let i = 0; i < boardLength; i++) {
+              for (let j = 0; j < boardLength; j++) {
+                if (regions[i][j] === reg) {
+                  if (nextSquares[i][j] === Values.AUTOX) {
+                    nextSquares[i][j] = Values.EMPTY;
+                  }
+                }
+              }
+            }
+      
+    }
 
     const nextSquares = [];
     for (let row of squaresXY) {
@@ -119,6 +168,7 @@ function Board() {
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
+        // handleRemoveAutoX(r, c);
         break;
       default:
         alert("Oops! default in switch case");
