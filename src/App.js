@@ -23,7 +23,6 @@ function Board() {
       </button>
     )
   }
-  // const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(36).fill(Values.EMPTY));
   const winner = calculateWinner(squares);
   let status = "";
@@ -132,17 +131,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Queenzura!</h1>
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <h2>{}</h2>
         <Board />
-        {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
+
       </header>
     </div>
   );
