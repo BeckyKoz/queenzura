@@ -23,7 +23,8 @@ function Board() {
       </button>
     )
   }
-  const [squares, setSquares] = useState(Array(36).fill(Values.EMPTY));
+  const boardLength = 6;
+  const [squares, setSquares] = useState(Array(boardLength ** 2).fill(Values.EMPTY));
   const winner = calculateWinner(squares);
   let status = "";
   if (winner) {
@@ -54,6 +55,16 @@ function Board() {
   }
 
   function calculateWinner(squares) {
+    // confirm correct number of Queens
+    let queenCounter = 0;
+    for (let element of squares) {
+      if (element == "Q") {
+        queenCounter += 1;
+      }
+    }
+    if (queenCounter != boardLength) {
+      return;
+    }
     const solution = 
       ["Q", " ", " ", " ", " ", " ",
       " ", " ", " ", "Q", " ", " ",
@@ -63,6 +74,7 @@ function Board() {
       " ", " ", " ", " ", "Q", " "];
     for (let i = 0; i < solution.length; i++) {
       // const [a, b, c, d, e, f] = lines[i];
+      let char;
       if (solution[i] != squares[i]) {
         return false;
       }
