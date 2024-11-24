@@ -76,6 +76,29 @@ body {
   content: '';
   display: table;
 }
+.region1 {
+  background-color: rgb(135, 221, 250);
+}
+
+.region2 {
+  background-color: rgb(138, 255, 138);
+}
+
+.region3 {
+  background-color: rgb(255, 255, 135);
+}
+
+.region4 {
+  background-color: rgb(252, 130, 148);
+}
+
+.region5 {
+  background-color: rgb(250, 158, 121);
+}
+
+.region6 {
+  background-color: rgb(116, 116, 211);
+}
 
 .status {
   margin-bottom: 10px;
