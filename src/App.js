@@ -53,42 +53,53 @@ function Board() {
   function handleClickXY(r, c) {
     if (calculateWinner(squaresXY)) {
       return;
-    }
-
-    // helper function to implement automatic x's when adding a queen
+    }    
+    // helper function to implement automatic X's when adding a queen
     function handleAddAutoX(r, c) { 
-      // r, c is row and col of queen being added. Use to calculate all x's to add automatically
-      // alert(nextSquares.length);
-      // do row
+      // r, c is row and col of queen being added. Use to calculate all X's to add automatically
       for (let i = 0; i < boardLength; i++) {
+        // do row
         if (nextSquares[r][i] === Values.EMPTY) {
-          nextSquares[r][i] = Values.AUTOX;
+            nextSquares[r][i] = Values.AUTOX;
         };
-        // for (let j = 0; j < boardLength; j++) {
-        //   if () {
-        //     if () {
-        //       nextSquares[j] = Values.X;
-        //     } else if ((j >= boardLength*fl) && (j < boardLength*(fl+1))) {
-        //       nextSquares[j] = Values.X;
-        //     } else if (j === ind + boardLength + 1) {
-        //       nextSquares[j] = Values.X;
-        //     } else if (j === ind - boardLength - 1) {
-        //       nextSquares[j] = Values.X;
-        //     } else if (j === ind - boardLength + 1) {
-        //       nextSquares[j] = Values.X;
-        //     } else if (j === ind + boardLength - 1) {
-        //       nextSquares[j] = Values.X;
-        //     } else {
-        //       nextSquares[j] = nextSquares[j];
-        //     }
-        //   };
-  
-        // };
+        // do column
+        if (nextSquares[i][c] === Values.EMPTY) {
+            nextSquares[i][c] = Values.AUTOX;
+        };
+        // do halo
+        // TODO add helper function to do make doing halo more efficient
+        if (((r-1) >= 0) && ((c-1) >= 0)) {
+          if (nextSquares[r-1][c-1] === Values.EMPTY) { // upper left 
+          nextSquares[r-1][c-1] = Values.AUTOX;
+          };
+        };
+        if (((r-1) >= 0) && ((c+1) < boardLength)) {
+          if (nextSquares[r-1][c+1] === Values.EMPTY) { // upper right 
+          nextSquares[r-1][c+1] = Values.AUTOX;
+          };
+        };
+        if (((r+1) < boardLength) && ((c-1) >= 0)) {
+          if (nextSquares[r+1][c-1] === Values.EMPTY) { // lower left  
+          nextSquares[r+1][c-1] = Values.AUTOX;
+          };
+        };
+        if (((r+1) < boardLength) && ((c+1) < boardLength)) {
+          if ((nextSquares[r+1][c+1]) === Values.EMPTY) { // lower right 
+            nextSquares[r+1][c+1] = Values.AUTOX;
+          };
+        };
       };
-      // do column
-      
-
-      // do halo
+      // do region
+      const reg = regions[r][c];
+      for (let i = 0; i < boardLength; i++) {
+        for (let j = 0; j < boardLength; j++) {
+          if (regions[i][j] === reg) {
+            if (nextSquares[i][j] === Values.EMPTY) {
+              nextSquares[i][j] = Values.AUTOX;
+            }
+          }
+        }
+      }
     };
 
     const nextSquares = [];
@@ -116,57 +127,6 @@ function Board() {
     setSquaresXY(nextSquares); // next state of squares array
   }
 
-  // function handleClick(i) {
-  //   if (calculateWinner(squares)) {
-  //     return;
-  //   }
-  //   // helper function to implement automatic x's when adding a queen
-  //   function handleAutomaticX(ind) {
-  //     const len = nextSquares.length;
-  //     const fl = Math.floor(ind / boardLength);
-  //     // i is index of queen being added. Use to calculate all x's to add automatically
-  //     for (let j = 0; j < nextSquares.length; j++) {
-  //       if (nextSquares[j] === Values.EMPTY) {
-  //         if ((ind % boardLength) === (j % boardLength)) {
-  //           nextSquares[j] = Values.X;
-  //         } else if ((j >= boardLength*fl) && (j < boardLength*(fl+1))) {
-  //           nextSquares[j] = Values.X;
-  //         } else if (j === ind + boardLength + 1) {
-  //           nextSquares[j] = Values.X;
-  //         } else if (j === ind - boardLength - 1) {
-  //           nextSquares[j] = Values.X;
-  //         } else if (j === ind - boardLength + 1) {
-  //           nextSquares[j] = Values.X;
-  //         } else if (j === ind + boardLength - 1) {
-  //           nextSquares[j] = Values.X;
-  //         } else {
-  //           nextSquares[j] = nextSquares[j];
-  //         }
-  //       };
-  //     };
-  //   };
-  
-  //   const nextSquares = squares.slice();
-  //   // use switch statement to get current state of square and generate new
-  //   switch(nextSquares[i]) {
-  //     case Values.EMPTY: 
-  //       nextSquares[i] = Values.X;
-  //       break;
-  //     case Values.X: 
-  //       nextSquares[i] = Values.QUEEN;
-  //       handleAutomaticX(i);
-  //       break;
-  //     case Values.QUEEN:
-  //       nextSquares[i] = Values.EMPTY;
-  //       break;
-  //     default:
-  //       alert("Oops! default in switch case");
-  //       break;
-  //   };
-  //   setSquares(nextSquares); // next state of squares array
-  // }
-
-
   function calculateWinner(squaresXY) {
     // first confirm correct number of Queens
     let queenCounter = 0;
@@ -181,7 +141,6 @@ function Board() {
       return;
     }
     // if correct number of queens, compare their locations with the solution
-
     for (let solution of solutionIndexPairs) {
       if (squaresXY[solution.r][solution.c] !== "Q") {
         return false;
@@ -196,13 +155,16 @@ function Board() {
         {squaresXY.map((row, r) => (
           <div className="board-row">
             {row.map((col, c) => (
-              <Square value={squaresXY[r][c]} row={r} col={c} region={regions[r][c]} onSquareClick={() => handleClickXY(r, c)} /> 
-
+              <Square 
+                value={squaresXY[r][c]} 
+                row={r} 
+                col={c} 
+                region={regions[r][c]} 
+                onSquareClick={() => handleClickXY(r, c)} 
+              /> 
             ))}
           </div>
-
         ))}
-       
       <ResetButton />
     </>
   ) 
