@@ -23,8 +23,13 @@ function Board() {
       </button>
     )
   }
-  const [xIsNext, setXIsNext] = useState(true);
+  // const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(36).fill(Values.EMPTY));
+  const winner = calculateWinner(squares);
+  let status = "";
+  if (winner) {
+    status = "You win!";
+  };
 
   function handleClick(i) {
     if (calculateWinner(squares)) {
@@ -63,12 +68,13 @@ function Board() {
         return false;
       }
     }
-    alert("winner!");
+    // alert("winner!");
     return true;
   }
 
   return (
     <>
+      <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} region={1} onSquareClick={() => handleClick(0)} /> 
         <Square value={squares[1]} region={1} onSquareClick={() => handleClick(1)} />
