@@ -3,8 +3,11 @@ import { useState } from 'react';
 
 function Square({value, region, row, col, hasManualX, onSquareClick}) {
   return (
-    <button data-isManual={hasManualX} className={`square region${region} row${row} col${col}`} onClick={onSquareClick}>
-      {value} 
+    <button 
+      data-isManual={hasManualX} 
+      className={`square region${region} row${row} col${col}`} 
+      onClick={onSquareClick}>
+        {value} 
     </button>
   );
 }
@@ -19,13 +22,32 @@ function Board() {
 
   function ResetButton() {
     return (
-      <button className={'reset'} onClick={() => setSquaresXY(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)))}>
-        Reset
+      <button 
+        className={'reset'} 
+        onClick={() => setSquaresXY(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)))}>
+          Reset
       </button>
     )
-  }
+  };
+
+  function AutoXButton() {
+    return (
+      <button 
+        className={'autoXButton'} 
+        onClick={() => handleAutoXButton()}>
+          {!autoXisOn ? "Turn on Auto-X" : "Turn off Auto-X"}
+      </button>
+    );
+  };
+
+  function handleAutoXButton() {
+    setAutoXisOn(!autoXisOn);
+    return;
+  };
+
   const boardLength = 6;
   const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
+  const [autoXisOn, setAutoXisOn] = useState(false);
   const regions = [
     [1, 1, 3, 3, 4, 4],
     [1, 2, 3, 4, 4, 5],
@@ -74,11 +96,11 @@ function Board() {
         if (nextSquares[i][c] === Values.EMPTY) {
             nextSquares[i][c] = Values.AUTOX;
         };
-        doHalo(r-1, c-1);
-        doHalo(r-1, c+1);
-        doHalo(r+1, c-1);
-        doHalo(r+1, c+1);
       };
+      doHalo(r-1, c-1);
+      doHalo(r-1, c+1);
+      doHalo(r+1, c-1);
+      doHalo(r+1, c+1);
       // do region
       const reg = regions[r][c];
       for (let i = 0; i < boardLength; i++) {
@@ -91,6 +113,7 @@ function Board() {
         }
       }
     };
+
     function handleUpdateAutoX() {
       for (let i = 0; i < boardLength; i++) {
         for (let j = 0; j < boardLength; j++) {
@@ -111,7 +134,7 @@ function Board() {
     const nextSquares = [];
     for (let row of squaresXY) {
       nextSquares.push(row.slice());
-    }
+    };
 
     // use switch statement to get current state of square and generate new
     switch(nextSquares[r][c]) {
@@ -121,11 +144,15 @@ function Board() {
       case Values.AUTOX: 
       case Values.MANUALX:
         nextSquares[r][c] = Values.QUEEN;
-        handleAddAutoX(r, c);
+        if (autoXisOn === true) {
+          handleAddAutoX(r, c);
+        };
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
-        handleUpdateAutoX();
+        if (autoXisOn === true) {
+          handleUpdateAutoX();
+        };
         break;
       default:
         alert("Oops! default in switch case");
@@ -174,6 +201,7 @@ function Board() {
           </div>
         ))}
       <ResetButton />
+      <AutoXButton />
     </>
   ) 
 }
