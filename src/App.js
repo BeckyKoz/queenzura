@@ -25,7 +25,6 @@ function Board() {
     )
   }
   const boardLength = 6;
-  // const [squares, setSquares] = useState(Array(boardLength ** 2).fill(Values.EMPTY));
   const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
   const regions = [
     [1, 1, 3, 3, 4, 4],
@@ -168,7 +167,7 @@ function Board() {
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
-        // handleRemoveAutoX(r, c);
+        handleRemoveAutoX(r, c);
         break;
       default:
         alert("Oops! default in switch case");
