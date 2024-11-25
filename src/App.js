@@ -66,6 +66,15 @@ function Board() {
     }    
     // helper function to implement automatic X's when adding a queen
     function handleAddAutoX(r, c) { 
+      // TODO add helper function to do make doing halo more efficient
+      function doHalo(row, col) {
+        if ((row >= 0) && (row < boardLength) && (col >= 0) && (col < boardLength)) {
+          if (nextSquares[row][col] === Values.EMPTY) { // upper left 
+          nextSquares[row][col] = Values.AUTOX;
+          };
+        };
+      };
+
       // r, c is row and col of queen being added. Use to calculate all X's to add automatically
       for (let i = 0; i < boardLength; i++) {
         // do row
@@ -76,28 +85,10 @@ function Board() {
         if (nextSquares[i][c] === Values.EMPTY) {
             nextSquares[i][c] = Values.AUTOX;
         };
-        // do halo
-        // TODO add helper function to do make doing halo more efficient
-        if (((r-1) >= 0) && ((c-1) >= 0)) {
-          if (nextSquares[r-1][c-1] === Values.EMPTY) { // upper left 
-          nextSquares[r-1][c-1] = Values.AUTOX;
-          };
-        };
-        if (((r-1) >= 0) && ((c+1) < boardLength)) {
-          if (nextSquares[r-1][c+1] === Values.EMPTY) { // upper right 
-          nextSquares[r-1][c+1] = Values.AUTOX;
-          };
-        };
-        if (((r+1) < boardLength) && ((c-1) >= 0)) {
-          if (nextSquares[r+1][c-1] === Values.EMPTY) { // lower left  
-          nextSquares[r+1][c-1] = Values.AUTOX;
-          };
-        };
-        if (((r+1) < boardLength) && ((c+1) < boardLength)) {
-          if ((nextSquares[r+1][c+1]) === Values.EMPTY) { // lower right 
-            nextSquares[r+1][c+1] = Values.AUTOX;
-          };
-        };
+        doHalo(r-1, c-1);
+        doHalo(r-1, c+1);
+        doHalo(r+1, c-1);
+        doHalo(r+1, c+1);
       };
       // do region
       const reg = regions[r][c];
