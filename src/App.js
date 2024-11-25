@@ -49,17 +49,6 @@ function Board() {
     status = "You win!";
   };
 
-  // helper function to retain automatic X's for all Qs on board
-  // function handleRetainAutoX() {
-  //   for (let i = 0; i < boardLength; i++) {
-  //     for (let j = 0; j < boardLength; j++) {
-  //       switch(nextSquares[i][j]) {
-  //         case(Values.QUEEN)
-  //       }
-  //     }
-  //   }
-  // }
-
   function handleClickXY(r, c) {
     if (calculateWinner(squaresXY)) {
       return;
@@ -69,7 +58,7 @@ function Board() {
       // TODO add helper function to do make doing halo more efficient
       function doHalo(row, col) {
         if ((row >= 0) && (row < boardLength) && (col >= 0) && (col < boardLength)) {
-          if (nextSquares[row][col] === Values.EMPTY) { // upper left 
+          if (nextSquares[row][col] === Values.EMPTY) { 
           nextSquares[row][col] = Values.AUTOX;
           };
         };
@@ -174,14 +163,13 @@ function Board() {
           <div className="board-row">
             {row.map((col, c) => (
               <Square 
-                value={squaresXY[r][c]} 
-                // value={squaresXY[r][c].toLowerCase()} 
+                value={squaresXY[r][c] === Values.AUTOX ? squaresXY[r][c].toLowerCase() : squaresXY[r][c]}
                 row={r} 
                 col={c} 
                 region={regions[r][c]} 
                 hasManualX={squaresXY[r][c]===Values.MANUALX} //bool
                 onSquareClick={() => handleClickXY(r, c)} 
-              /> 
+              />
             ))}
           </div>
         ))}
