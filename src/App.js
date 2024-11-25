@@ -49,6 +49,17 @@ function Board() {
     status = "You win!";
   };
 
+  // helper function to retain automatic X's for all Qs on board
+  // function handleRetainAutoX() {
+  //   for (let i = 0; i < boardLength; i++) {
+  //     for (let j = 0; j < boardLength; j++) {
+  //       switch(nextSquares[i][j]) {
+  //         case(Values.QUEEN)
+  //       }
+  //     }
+  //   }
+  // }
+
   function handleClickXY(r, c) {
     if (calculateWinner(squaresXY)) {
       return;
@@ -100,55 +111,22 @@ function Board() {
         }
       }
     };
-// *********** 
-    // helper function to remove automatic X's from around queen when queen is removed
-    function handleRemoveAutoX(r, c) {
-            // r, c is row and col of queen being removed. Use to calculate all X's to remove automatically
-            for (let i = 0; i < boardLength; i++) {
-              // do row
-              if (nextSquares[r][i] === Values.AUTOX) {
-                  nextSquares[r][i] = Values.EMPTY;
-              };
-              // do column
-              if (nextSquares[i][c] === Values.AUTOX) {
-                  nextSquares[i][c] = Values.EMPTY;
-              };
-              // do halo
-              // TODO add helper function to do make doing halo more efficient
-              if (((r-1) >= 0) && ((c-1) >= 0)) {
-                if (nextSquares[r-1][c-1] === Values.AUTOX) { // upper left 
-                nextSquares[r-1][c-1] = Values.EMPTY;
-                };
-              };
-              if (((r-1) >= 0) && ((c+1) < boardLength)) {
-                if (nextSquares[r-1][c+1] === Values.AUTOX) { // upper right 
-                nextSquares[r-1][c+1] = Values.EMPTY;
-                };
-              };
-              if (((r+1) < boardLength) && ((c-1) >= 0)) {
-                if (nextSquares[r+1][c-1] === Values.AUTOX) { // lower left  
-                nextSquares[r+1][c-1] = Values.EMPTY;
-                };
-              };
-              if (((r+1) < boardLength) && ((c+1) < boardLength)) {
-                if ((nextSquares[r+1][c+1]) === Values.AUTOX) { // lower right 
-                  nextSquares[r+1][c+1] = Values.EMPTY;
-                };
-              };
-            };
-            // do region
-            const reg = regions[r][c];
-            for (let i = 0; i < boardLength; i++) {
-              for (let j = 0; j < boardLength; j++) {
-                if (regions[i][j] === reg) {
-                  if (nextSquares[i][j] === Values.AUTOX) {
-                    nextSquares[i][j] = Values.EMPTY;
-                  }
-                }
-              }
-            }
-      
-    }
+    function handleUpdateAutoX() {
+      for (let i = 0; i < boardLength; i++) {
+        for (let j = 0; j < boardLength; j++) {
+          if (nextSquares[i][j] === Values.AUTOX) {
+            nextSquares[i][j] = Values.EMPTY;
+          }
+        };
+      };
+      for (let i = 0; i < boardLength; i++) {
+        for (let j = 0; j < boardLength; j++) {
+          if (nextSquares[i][j] === Values.QUEEN) {
+            handleAddAutoX(i, j);
+          }
+        };
+      };
+    };
 
     const nextSquares = [];
     for (let row of squaresXY) {
@@ -163,11 +141,11 @@ function Board() {
       case Values.AUTOX: 
       case Values.MANUALX:
         nextSquares[r][c] = Values.QUEEN;
-        handleAddAutoX(r,c);
+        handleAddAutoX(r, c);
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
-        handleRemoveAutoX(r, c);
+        handleUpdateAutoX();
         break;
       default:
         alert("Oops! default in switch case");
@@ -206,9 +184,11 @@ function Board() {
             {row.map((col, c) => (
               <Square 
                 value={squaresXY[r][c]} 
+                // value={squaresXY[r][c].toLowerCase()} 
                 row={r} 
                 col={c} 
                 region={regions[r][c]} 
+                hasManualX={squaresXY[r][c]===Values.MANUALX} //bool
                 onSquareClick={() => handleClickXY(r, c)} 
               /> 
             ))}
