@@ -1,11 +1,10 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function Square({value, region, row, col, hasManualX, onSquareClick}) {
+function Square({value, region, onSquareClick}) {
   return (
     <button 
-      data-isManual={hasManualX} 
-      className={`square region${region} row${row} col${col}`} 
+      className={`square region${region}`} 
       onClick={onSquareClick}>
         {value} 
     </button>
@@ -13,96 +12,82 @@ function Square({value, region, row, col, hasManualX, onSquareClick}) {
 }
 
 function Board() {
-  // JSX 
-  function ResetButton() {
-    return (
-      <button 
-        className={'reset'} 
-        onClick={() => setSquaresXY(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)))}>
-          Reset
-      </button>
-    )
-  };
 
-  function AutoXButton() {
-    return (
-      <button 
-        className={'autoXButton'} 
-        onClick={() => handleAutoXButton()}>
-          {!autoXisOn ? "Turn on Auto-X" : "Turn off Auto-X"}
-      </button>
-    );
-  };
-
-  // constants
   const Values = Object.freeze({
     EMPTY: " ",
     AUTOX: "X",
     QUEEN: "Q",
     MANUALX: "x",
   });
-  const boardLength = 6;
-  const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
+
+  const allGames = [
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 3},
+        {r: 2, c: 1},
+        {r: 3, c: 5},
+        {r: 4, c: 2},
+        {r: 5, c: 4},
+      ], 
+      regions: [
+        [1, 1, 3, 3, 4, 4],
+        [1, 2, 3, 4, 4, 5],
+        [1, 2, 3, 3, 3, 5],
+        [3, 3, 3, 3, 3, 5],
+        [3, 3, 3, 3, 3, 6],
+        [3, 3, 3, 6, 6, 6],
+      ],
+    },
+];
+  const solutionIndexPairs = allGames[0].solutionIndexPairs;
+  const regions = allGames[0].regions;  
+  const boardLength = regions.length;
+  const [squares, setSquares] = useState(generateEmptyBoard());
   const [autoXisOn, setAutoXisOn] = useState(false);
-  const regions = [
-    [1, 1, 3, 3, 4, 4],
-    [1, 2, 3, 4, 4, 5],
-    [1, 2, 3, 3, 3, 5],
-    [3, 3, 3, 3, 3, 5],
-    [3, 3, 3, 3, 3, 6],
-    [3, 3, 3, 6, 6, 6],
-  ];
-  const solutionIndexPairs = [
-    {r: 0, c: 0},
-    {r: 1, c: 3},
-    {r: 2, c: 1},
-    {r: 3, c: 5},
-    {r: 4, c: 2},
-    {r: 5, c: 4},
-  ];
+  const [winner, setWinner] = useState(false);
 
-  const winner = calculateWinner(squaresXY);
-  let status = "";
-  if (winner) {
-    status = "You win!";
-  };
+  useEffect (() => {
+    calculateWinner();
+    }, 
+  );
 
-  //// HELPER FUNCTIONS
+  function generateEmptyBoard() {
+    return Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY));
+  }
+
   // helper function to implement automatic X's when adding a queen
   function addAutoX(r, c, nextSquares) { 
+    function updateEmptyToAutoX(r, c) {
+      if (nextSquares[r][c] === Values.EMPTY) {
+        nextSquares[r][c] = Values.AUTOX;
+      };
+    };
+
     // helper function to do rows and columns
     function doRowsCols(r, c) {
       // r, c is row and col of queen being added. Use to calculate all X's to add automatically
       for (let i = 0; i < boardLength; i++) {
         // do row
-        if (nextSquares[r][i] === Values.EMPTY) {
-            nextSquares[r][i] = Values.AUTOX;
-        };
+        updateEmptyToAutoX(r, i);
         // do column
-        if (nextSquares[i][c] === Values.EMPTY) {
-            nextSquares[i][c] = Values.AUTOX;
-        };
+        updateEmptyToAutoX(i, c);
       };
     };
     // helper function to do make doing halo more efficient
     function doHalo(row, col) {
       if ((row >= 0) && (row < boardLength) && (col >= 0) && (col < boardLength)) {
-        if (nextSquares[row][col] === Values.EMPTY) { 
-        nextSquares[row][col] = Values.AUTOX;
-        };
+        updateEmptyToAutoX(row, col);
       };
     };
     // helper function to do region
     function doRegion(r, c) {
-      // do region
       const reg = regions[r][c];
       for (let i = 0; i < boardLength; i++) {
         for (let j = 0; j < boardLength; j++) {
           if (regions[i][j] === reg) {
-            if (nextSquares[i][j] === Values.EMPTY) {
-              nextSquares[i][j] = Values.AUTOX;
-            }
-          }
+            updateEmptyToAutoX(i, j);
+          };
         }
       }
     };
@@ -137,35 +122,33 @@ function Board() {
     };
   };
 
-  function handleAutoXButton() {
-    const newAutoX = !autoXisOn; // this is the copy of state
-    setAutoXisOn(newAutoX);
-
+  function copySquaresState(squares) {
     const nextSquares = [];
-    for (let row of squaresXY) {
+    for (let row of squares) {
       nextSquares.push(row.slice());
     };
+    return nextSquares;
+  };
+
+  function handleAutoXButton() {
+    const nextSquares = copySquaresState(squares);
+
+    const newAutoX = !autoXisOn; // this is the copy of state
+    setAutoXisOn(newAutoX);
 
     if (newAutoX === false) {
       removeAutoX(nextSquares);
     } else {
       updateAutoX(nextSquares);
     };
-    setSquaresXY(nextSquares);
+    setSquares(nextSquares);
     return;
   };
 
-  function handleClickXY(r, c) {
-    if (calculateWinner(squaresXY)) {
-      return;
-    }  
+  function handleClick(r, c) {
+    const nextSquares = copySquaresState(squares);
 
-    const nextSquares = [];
-    for (let row of squaresXY) {
-      nextSquares.push(row.slice());
-    };
-
-    // use switch statement to get current state of square and generate new
+    // get current state of square and generate new
     switch(nextSquares[r][c]) {
       case Values.EMPTY: 
         nextSquares[r][c] = Values.MANUALX;
@@ -184,47 +167,66 @@ function Board() {
         };
         break;
       default:
-        alert("Oops! default in switch case");
         break;
     };
-    setSquaresXY(nextSquares); // next state of squares array
+    setSquares(nextSquares); 
   }
 
-  function calculateWinner(squaresXY) {
+  function calculateWinner() {
     // first confirm correct number of Queens
     let queenCounter = 0;
-    for (let element of squaresXY) {
+    for (let element of squares) {
       for (let e of element) {
-        if (e == "Q") {
+        if (e === Values.QUEEN) {
           queenCounter += 1;
         }
       }
     }
-    if (queenCounter != boardLength) {
-      return;
+    if (queenCounter !== boardLength) {
+      setWinner(false);
+      return false;
     }
     // if correct number of queens, compare their locations with the solution
     for (let solution of solutionIndexPairs) {
-      if (squaresXY[solution.r][solution.c] !== "Q") {
-        return false;
+      if (squares[solution.r][solution.c] !== Values.QUEEN) {
+        setWinner(false);
+        return false;;
       }
     }
+    setWinner(true);
     return true;
-  }
+  };
+
+  function ResetButton() {
+    return (
+      <button 
+        className={'reset'} 
+        onClick={() => setSquares(generateEmptyBoard())}>
+          Reset
+      </button>
+    )
+  };
+
+  function AutoXButton() {
+    return (
+      <button 
+        className={'autoXButton'} 
+        onClick={() => handleAutoXButton()}>
+          {!autoXisOn ? "Turn on Auto-X" : "Turn off Auto-X"}
+      </button>
+    );
+  };
 
   return (
     <>
-      <div className="status">{status}</div>
-        {squaresXY.map((row, r) => (
+      <div className="status">&nbsp;{winner ? "You win!" : ""}</div>
+        {squares.map((row, r) => (
           <div className="board-row">
             {row.map((col, c) => (
               <Square 
-                value={squaresXY[r][c] === Values.AUTOX ? squaresXY[r][c].toLowerCase() : squaresXY[r][c]}
-                row={r} 
-                col={c} 
+                value={squares[r][c] === Values.AUTOX ? squares[r][c].toLowerCase() : squares[r][c]}
                 region={regions[r][c]} 
-                hasManualX={squaresXY[r][c]===Values.MANUALX} //bool
-                onSquareClick={() => handleClickXY(r, c)} 
+                onSquareClick={() => handleClick(r, c)} 
               />
             ))}
           </div>
