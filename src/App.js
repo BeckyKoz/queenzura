@@ -41,6 +41,28 @@ function Board() {
     },
     {
       solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 3},
+        {r: 2, c: 1},
+        {r: 3, c: 5},
+        {r: 4, c: 2},
+        {r: 5, c: 4},
+        {r: 6, c: 6},
+
+      ], 
+      regions: [
+        [1, 1, 3, 3, 4, 4, 7],
+        [1, 2, 3, 4, 4, 5, 7],
+        [1, 2, 3, 3, 3, 5, 7],
+        [3, 3, 3, 3, 3, 5, 7],
+        [3, 3, 3, 3, 3, 6, 7],
+        [3, 3, 3, 6, 6, 6, 7],
+        [7, 7, 7, 7, 7, 7, 7],
+      ],
+    },
+
+    {
+      solutionIndexPairs: [
         {r: 0, c: 1},
         {r: 1, c: 4},
         {r: 2, c: 2},
@@ -118,7 +140,6 @@ function Board() {
   function selectBoard() {
     const len = allBoards.length;
     const choice = Math.floor(Math.random() * len);
-    // alert(choice);
     return choice;
   }
 
