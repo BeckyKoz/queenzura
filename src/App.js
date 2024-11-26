@@ -40,11 +40,6 @@ function Board() {
     );
   };
 
-  function handleAutoXButton() {
-    setAutoXisOn(!autoXisOn);
-    return;
-  };
-
   const boardLength = 6;
   const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
   const [autoXisOn, setAutoXisOn] = useState(false);
@@ -71,21 +66,10 @@ function Board() {
     status = "You win!";
   };
 
-  function handleClickXY(r, c) {
-    if (calculateWinner(squaresXY)) {
-      return;
-    }    
-    // helper function to implement automatic X's when adding a queen
-    function handleAddAutoX(r, c) { 
-      // TODO add helper function to do make doing halo more efficient
-      function doHalo(row, col) {
-        if ((row >= 0) && (row < boardLength) && (col >= 0) && (col < boardLength)) {
-          if (nextSquares[row][col] === Values.EMPTY) { 
-          nextSquares[row][col] = Values.AUTOX;
-          };
-        };
-      };
-
+  // helper function to implement automatic X's when adding a queen
+  function addAutoX(r, c, nextSquares) { 
+    // helper function to do rows and columns
+    function doRowsCols(r, c) {
       // r, c is row and col of queen being added. Use to calculate all X's to add automatically
       for (let i = 0; i < boardLength; i++) {
         // do row
@@ -97,10 +81,17 @@ function Board() {
             nextSquares[i][c] = Values.AUTOX;
         };
       };
-      doHalo(r-1, c-1);
-      doHalo(r-1, c+1);
-      doHalo(r+1, c-1);
-      doHalo(r+1, c+1);
+    };
+    // helper function to do make doing halo more efficient
+    function doHalo(row, col) {
+      if ((row >= 0) && (row < boardLength) && (col >= 0) && (col < boardLength)) {
+        if (nextSquares[row][col] === Values.EMPTY) { 
+        nextSquares[row][col] = Values.AUTOX;
+        };
+      };
+    };
+    // helper function to do region
+    function doRegion(r, c, nextSquares) {
       // do region
       const reg = regions[r][c];
       for (let i = 0; i < boardLength; i++) {
@@ -113,23 +104,59 @@ function Board() {
         }
       }
     };
+    doRowsCols(r, c);
+    doHalo(r-1, c-1, );
+    doHalo(r-1, c+1);
+    doHalo(r+1, c-1);
+    doHalo(r+1, c+1);
+    doRegion(r, c, nextSquares);
+  };
 
-    function handleUpdateAutoX() {
-      for (let i = 0; i < boardLength; i++) {
-        for (let j = 0; j < boardLength; j++) {
-          if (nextSquares[i][j] === Values.AUTOX) {
-            nextSquares[i][j] = Values.EMPTY;
-          }
-        };
-      };
-      for (let i = 0; i < boardLength; i++) {
-        for (let j = 0; j < boardLength; j++) {
-          if (nextSquares[i][j] === Values.QUEEN) {
-            handleAddAutoX(i, j);
-          }
-        };
+  // helper function to remove auto x's
+  function removeAutoX(nextSquares) {
+    for (let i = 0; i < boardLength; i++) {
+      for (let j = 0; j < boardLength; j++) {
+        if (nextSquares[i][j] === Values.AUTOX) {
+          nextSquares[i][j] = Values.EMPTY;
+        }
       };
     };
+  };
+
+  // helper function to update auto x's 
+  function updateAutoX(nextSquares) {
+    removeAutoX(nextSquares);
+    for (let i = 0; i < boardLength; i++) {
+      for (let j = 0; j < boardLength; j++) {
+        if (nextSquares[i][j] === Values.QUEEN) {
+          addAutoX(i, j, nextSquares);
+        }
+      };
+    };
+  };
+
+  function handleAutoXButton() {
+    const newAutoX = !autoXisOn; // this is the copy of state
+    setAutoXisOn(newAutoX);
+
+    const nextSquares = [];
+    for (let row of squaresXY) {
+      nextSquares.push(row.slice());
+    };
+
+    if (newAutoX === false) {
+      removeAutoX(nextSquares);
+    } else {
+      updateAutoX(nextSquares);
+    };
+    setSquaresXY(nextSquares);
+    return;
+  };
+
+  function handleClickXY(r, c) {
+    if (calculateWinner(squaresXY)) {
+      return;
+    }  
 
     const nextSquares = [];
     for (let row of squaresXY) {
@@ -145,13 +172,13 @@ function Board() {
       case Values.MANUALX:
         nextSquares[r][c] = Values.QUEEN;
         if (autoXisOn === true) {
-          handleAddAutoX(r, c);
+          addAutoX(r, c, nextSquares);
         };
         break;
       case Values.QUEEN:
         nextSquares[r][c] = Values.EMPTY;
         if (autoXisOn === true) {
-          handleUpdateAutoX();
+          updateAutoX(nextSquares);
         };
         break;
       default:
