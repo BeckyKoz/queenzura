@@ -20,7 +20,7 @@ function Board() {
     MANUALX: "x",
   });
 
-  const allGames = [
+  const allBoards = [
     {
       solutionIndexPairs: [
         {r: 0, c: 0},
@@ -39,9 +39,72 @@ function Board() {
         [3, 3, 3, 6, 6, 6],
       ],
     },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 1},
+        {r: 1, c: 4},
+        {r: 2, c: 2},
+        {r: 3, c: 0},
+        {r: 4, c: 6},
+        {r: 5, c: 3},
+        {r: 6, c: 5},
+      ], 
+      regions: [
+        [2, 2, 2, 7, 7, 7, 7],
+        [2, 1, 2, 2, 7, 7, 7],
+        [2, 1, 1, 7, 7, 4, 4],
+        [4, 1, 4, 4, 4, 4, 4],
+        [4, 1, 4, 6, 6, 4, 6],
+        [4, 4, 4, 3, 6, 6, 6],
+        [4, 3, 3, 3, 6, 5, 5],
+      ],
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 2},
+        {r: 1, c: 0},
+        {r: 2, c: 5},
+        {r: 3, c: 1},
+        {r: 4, c: 4},
+        {r: 5, c: 6},
+        {r: 6, c: 3},
+      ], 
+      regions: [
+        [2, 2, 5, 5, 1, 4, 4],
+        [2, 2, 2, 5, 1, 4, 4],
+        [2, 7, 7, 5, 1, 4, 4],
+        [2, 7, 7, 7, 1, 4, 4],
+        [1, 1, 1, 1, 1, 3, 3],
+        [1, 1, 1, 6, 3, 3, 3],
+        [1, 1, 1, 6, 3, 3, 3],
+      ],
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 1},
+        {r: 1, c: 6},
+        {r: 2, c: 4},
+        {r: 3, c: 2},
+        {r: 4, c: 0},
+        {r: 5, c: 5},
+        {r: 6, c: 3},
+      ], 
+      regions: [
+        [2, 6, 6, 1, 1, 1, 1],
+        [2, 6, 6, 1, 4, 4, 4],
+        [2, 2, 6, 1, 7, 7, 4],
+        [2, 2, 3, 1, 7, 7, 4],
+        [2, 2, 2, 1, 1, 1, 4],
+        [5, 5, 5, 1, 5, 1, 1],
+        [5, 5, 5, 5, 5, 1, 1],
+
+      ],
+    },
+
 ];
-  const solutionIndexPairs = allGames[0].solutionIndexPairs;
-  const regions = allGames[0].regions;  
+  const boardChoice = selectBoard();
+  const solutionIndexPairs = allBoards[boardChoice].solutionIndexPairs;
+  const regions = allBoards[boardChoice].regions;  
   const boardLength = regions.length;
   const [squares, setSquares] = useState(generateEmptyBoard());
   const [autoXisOn, setAutoXisOn] = useState(false);
@@ -51,6 +114,13 @@ function Board() {
     calculateWinner();
     }, 
   );
+
+  function selectBoard() {
+    const len = allBoards.length;
+    const choice = Math.floor(Math.random() * len);
+    // alert(choice);
+    return choice;
+  }
 
   function generateEmptyBoard() {
     return Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY));
