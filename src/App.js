@@ -13,13 +13,7 @@ function Square({value, region, row, col, hasManualX, onSquareClick}) {
 }
 
 function Board() {
-  const Values = Object.freeze({
-    EMPTY: " ",
-    AUTOX: "X",
-    QUEEN: "Q",
-    MANUALX: "x",
-  });
-
+  // JSX 
   function ResetButton() {
     return (
       <button 
@@ -40,6 +34,13 @@ function Board() {
     );
   };
 
+  // constants
+  const Values = Object.freeze({
+    EMPTY: " ",
+    AUTOX: "X",
+    QUEEN: "Q",
+    MANUALX: "x",
+  });
   const boardLength = 6;
   const [squaresXY, setSquaresXY] = useState(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)));
   const [autoXisOn, setAutoXisOn] = useState(false);
@@ -66,6 +67,7 @@ function Board() {
     status = "You win!";
   };
 
+  //// HELPER FUNCTIONS
   // helper function to implement automatic X's when adding a queen
   function addAutoX(r, c, nextSquares) { 
     // helper function to do rows and columns
@@ -91,7 +93,7 @@ function Board() {
       };
     };
     // helper function to do region
-    function doRegion(r, c, nextSquares) {
+    function doRegion(r, c) {
       // do region
       const reg = regions[r][c];
       for (let i = 0; i < boardLength; i++) {
@@ -105,11 +107,11 @@ function Board() {
       }
     };
     doRowsCols(r, c);
-    doHalo(r-1, c-1, );
+    doHalo(r-1, c-1);
     doHalo(r-1, c+1);
     doHalo(r+1, c-1);
     doHalo(r+1, c+1);
-    doRegion(r, c, nextSquares);
+    doRegion(r, c);
   };
 
   // helper function to remove auto x's
@@ -240,7 +242,6 @@ function App() {
         <h1>Queenzura!</h1>
         <h2>{}</h2>
         <Board />
-
       </header>
     </div>
   );
