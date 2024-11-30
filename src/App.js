@@ -1,9 +1,10 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
-function Square({value, region, onSquareClick}) {
+function Square({value, region, onSquareClick, idkey}) {
   return (
     <button 
+      key={`id${idkey}`}
       className={`square region${region}`} 
       onClick={onSquareClick}>
         {value} 
@@ -124,10 +125,14 @@ function Board() {
     },
 
 ];
-  const boardChoice = selectBoard();
-  const solutionIndexPairs = allBoards[boardChoice].solutionIndexPairs;
-  const regions = allBoards[boardChoice].regions;  
-  const boardLength = regions.length;
+  // let lengthOfBoard = 6;
+  const [boardChoice, setBoardChoice] = useState(0);
+  // console.log(boardChoice);
+  const [solutionIndexPairs, setSolutionIndexPairs] = useState(allBoards[boardChoice].solutionIndexPairs);
+  // console.log(solutionIndexPairs);
+  const [regions, setRegions] = useState(allBoards[boardChoice].regions);  
+  const [boardLength, setBoardLength] = useState(allBoards[boardChoice].regions.length);
+  // console.log(boardLength);
   const [squares, setSquares] = useState(generateEmptyBoard());
   const [autoXisOn, setAutoXisOn] = useState(false);
   const [winner, setWinner] = useState(false);
@@ -140,8 +145,25 @@ function Board() {
   function selectBoard() {
     const len = allBoards.length;
     const choice = Math.floor(Math.random() * len);
-    return choice;
+    setBoardChoice(choice);
+    console.log("new choice is : ", choice);
+    let newLength = allBoards[choice].regions.length;
+    setRegions(allBoards[choice].regions);
+    setBoardLength(newLength);
+    setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
+    setSquares(Array(newLength).fill(Array(newLength).fill(Values.EMPTY)))
   }
+
+  // function startGame() {
+  //   const board = selectBoard();
+  //   setBoardChoice(board);
+  //   setSolutionIndexPairs(allBoards[boardChoice].solutionIndexPairs);
+  //   setRegions(allBoards[boardChoice].regions);
+  //   setBoardLength(allBoards[boardChoice].solutionIndexPairs.length);
+  //   setSquares(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)))
+
+  //   // generateEmptyBoard();
+  // }
 
   function generateEmptyBoard() {
     return Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY));
@@ -236,6 +258,25 @@ function Board() {
     return;
   };
 
+  function handleNewGameButton() {
+    // // console.log("Current board is ", boardChoice);
+    // let newBoard = selectBoard();
+    // setBoardChoice(newBoard);
+    // let newGame = allBoards[newBoard];
+    // setSolutionIndexPairs(newGame.solutionIndexPairs);
+    // let newRegion = newGame.regions;
+    // setRegions(newRegion);
+    // // console.log(regions);
+    // // let newRegion = newGame.regions;
+    // setBoardLength(newRegion.length);
+
+    // // setRegions(allBoards[newBoard].regions);
+    // // console.log("boardlength = ", boardLength);
+    // setSquares(generateEmptyBoard());
+    selectBoard();
+  };
+
+
   function handleClick(r, c) {
     const nextSquares = copySquaresState(squares);
 
@@ -288,15 +329,26 @@ function Board() {
     return true;
   };
 
-  function ResetButton() {
+  function ClearButton() {
     return (
       <button 
-        className={'reset'} 
+        className={'clearboard'} 
         onClick={() => setSquares(generateEmptyBoard())}>
-          Reset
+          Clear Board
       </button>
     )
   };
+
+  function NewGameButton() {
+    return (
+      <button 
+        className={'newgame'} 
+        onClick={() => handleNewGameButton()}>
+          New Game
+      </button>
+    )
+  };
+
 
   function AutoXButton() {
     return (
@@ -315,6 +367,7 @@ function Board() {
           <div className="board-row">
             {row.map((col, c) => (
               <Square 
+                key={`${r}+${c}`}
                 value={squares[r][c] === Values.AUTOX ? squares[r][c].toLowerCase() : squares[r][c]}
                 region={regions[r][c]} 
                 onSquareClick={() => handleClick(r, c)} 
@@ -322,8 +375,9 @@ function Board() {
             ))}
           </div>
         ))}
-      <ResetButton />
+      <ClearButton />
       <AutoXButton />
+      <NewGameButton />
     </>
   ) 
 }
