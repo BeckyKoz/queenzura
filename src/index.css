@@ -53,7 +53,7 @@ ul {
 }
 
 .buttons {
-  margin: 2em;
+  margin: 1em;
   /* font: ; */
 }
 
@@ -91,11 +91,11 @@ ul {
 }
 
 .region1 {
-  background-color: rgb(253, 126, 145);
+  background-color: rgb(255, 112, 133);
 }
 
 .region2 {
-  background-color: rgb(253, 145, 102);
+  background-color: rgb(255, 129, 79);
 }
 
 .region3 {

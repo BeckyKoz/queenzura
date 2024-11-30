@@ -390,6 +390,11 @@ function Board() {
   return (
     <>
       <div className="status">&nbsp;{winner ? "You win!" : ""}</div>
+      <div className="buttons">
+          <ClearButton />
+          <AutoXButton />
+          <NewGameButton />
+        </div>
       <div className="gameBoard"> 
         {squares.map((row, r) => (
           <div className="board-row">
@@ -406,11 +411,6 @@ function Board() {
 
 
       </div>
-        <div className="buttons">
-          <ClearButton />
-          <AutoXButton />
-          <NewGameButton />
-        </div>
     </>
   ) 
 }
@@ -420,7 +420,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Queenzura!</h1>
-        <h2>{}</h2>
+        {/* <h2>{}</h2> */}
         <Board />
       </header>
     </div>
