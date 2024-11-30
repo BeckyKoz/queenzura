@@ -155,6 +155,30 @@ function Board() {
         [2, 2, 2, 2, 2, 2],
       ],
     },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 5},
+        {r: 1, c: 1},
+        {r: 2, c: 7},
+        {r: 3, c: 2},
+        {r: 4, c: 0},
+        {r: 5, c: 3},
+        {r: 6, c: 6},
+        {r: 7, c: 4},
+
+      ], 
+      regions: [
+        [2, 2, 2, 7, 7, 7, 7, 7],
+        [2, 2, 7, 7, 1, 1, 1, 7],
+        [2, 2, 2, 7, 7, 7, 1, 1],
+        [2, 2, 4, 6, 6, 7, 1, 1],
+        [3, 3, 3, 6, 7, 7, 7, 7],
+        [3, 3, 6, 6, 7, 5, 5, 7],
+        [3, 3, 3, 7, 7, 5, 5, 7],
+        [3, 3, 3, 8, 8, 5, 5, 5],
+      ],
+    },
+
 
 
 ];
@@ -366,6 +390,7 @@ function Board() {
   return (
     <>
       <div className="status">&nbsp;{winner ? "You win!" : ""}</div>
+      <div className="gameBoard"> 
         {squares.map((row, r) => (
           <div className="board-row">
             {row.map((col, c) => (
@@ -378,9 +403,14 @@ function Board() {
             ))}
           </div>
         ))}
-      <ClearButton />
-      <AutoXButton />
-      <NewGameButton />
+
+
+      </div>
+        <div className="buttons">
+          <ClearButton />
+          <AutoXButton />
+          <NewGameButton />
+        </div>
     </>
   ) 
 }

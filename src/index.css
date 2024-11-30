@@ -10,7 +10,8 @@ body {
 
 h1 {
   margin-top: 0;
-  font-size: 22px;
+  font-size: 30x;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 h2 {
@@ -46,6 +47,16 @@ ul {
   padding-inline-start: 20px;
 }
 
+.gameBoard {
+  /* margin: 1em; */
+  margin: auto;
+}
+
+.buttons {
+  margin: 2em;
+  /* font: ; */
+}
+
 .clearboard {
   margin: 1em;
 }
@@ -78,12 +89,13 @@ ul {
   content: '';
   display: table;
 }
+
 .region1 {
-  background-color: rgb(135, 221, 250);
+  background-color: rgb(253, 126, 145);
 }
 
 .region2 {
-  background-color: rgb(138, 255, 138);
+  background-color: rgb(253, 145, 102);
 }
 
 .region3 {
@@ -91,11 +103,11 @@ ul {
 }
 
 .region4 {
-  background-color: rgb(253, 126, 145);
+  background-color: rgb(138, 255, 138);
 }
 
 .region5 {
-  background-color: rgb(253, 145, 102);
+  background-color: rgb(135, 221, 250);
 }
 
 .region6 {
@@ -104,6 +116,10 @@ ul {
 
 .region7 {
   background-color: rgb(234, 65, 223);
+}
+
+.region8 {
+  background-color: silver;
 }
 
 
