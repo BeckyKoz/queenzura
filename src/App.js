@@ -61,7 +61,6 @@ function Board() {
         [7, 7, 7, 7, 7, 7, 7],
       ],
     },
-
     {
       solutionIndexPairs: [
         {r: 0, c: 1},
@@ -144,7 +143,7 @@ function Board() {
   const [solutionIndexPairs, setSolutionIndexPairs] = useState(allBoards[boardChoice].solutionIndexPairs);
   const [regions, setRegions] = useState(allBoards[boardChoice].regions);  
   const [boardLength, setBoardLength] = useState(allBoards[boardChoice].regions.length);
-  const [squares, setSquares] = useState(generateEmptyBoard());
+  const [squares, setSquares] = useState(generateEmptyBoard(boardLength));
   const [autoXisOn, setAutoXisOn] = useState(false);
   const [winner, setWinner] = useState(false);
 
@@ -157,16 +156,15 @@ function Board() {
     const len = allBoards.length;
     const choice = Math.floor(Math.random() * len);
     setBoardChoice(choice);
-    console.log("new choice is : ", choice);
-    let newLength = allBoards[choice].regions.length;
+    const newLength = allBoards[choice].regions.length;
     setRegions(allBoards[choice].regions);
     setBoardLength(newLength);
     setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
-    setSquares(Array(newLength).fill(Array(newLength).fill(Values.EMPTY)))
+    setSquares(generateEmptyBoard(newLength));
   }
 
-  function generateEmptyBoard() {
-    return Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY));
+  function generateEmptyBoard(boardLen) {
+    return Array(boardLen).fill(Array(boardLen).fill(Values.EMPTY));
   }
 
   // helper function to implement automatic X's when adding a queen
@@ -319,7 +317,7 @@ function Board() {
     return (
       <button 
         className={'clearboard'} 
-        onClick={() => setSquares(generateEmptyBoard())}>
+        onClick={() => setSquares(generateEmptyBoard(boardLength))}>
           Clear Board
       </button>
     )
