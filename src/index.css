@@ -46,9 +46,18 @@ ul {
   padding-inline-start: 20px;
 }
 
-.reset {
-  margin: 2em;
+.clearboard {
+  margin: 1em;
 }
+
+.autoXButton {
+  margin: 1em;
+}
+
+.newgame {
+  margin: 1em;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;

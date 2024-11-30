@@ -120,19 +120,30 @@ function Board() {
         [2, 2, 2, 1, 1, 1, 4],
         [5, 5, 5, 1, 5, 1, 1],
         [5, 5, 5, 5, 5, 1, 1],
-
+      ],
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 3},
+        {r: 2, c: 1},
+        {r: 3, c: 4},
+        {r: 4, c: 2},
+      ], 
+      regions: [
+        [5, 5, 2, 3, 3],
+        [4, 4, 2, 2, 3],
+        [1, 4, 2, 3, 3],
+        [1, 1, 1, 1, 3],
+        [1, 1, 1, 1, 1],
       ],
     },
 
 ];
-  // let lengthOfBoard = 6;
   const [boardChoice, setBoardChoice] = useState(0);
-  // console.log(boardChoice);
   const [solutionIndexPairs, setSolutionIndexPairs] = useState(allBoards[boardChoice].solutionIndexPairs);
-  // console.log(solutionIndexPairs);
   const [regions, setRegions] = useState(allBoards[boardChoice].regions);  
   const [boardLength, setBoardLength] = useState(allBoards[boardChoice].regions.length);
-  // console.log(boardLength);
   const [squares, setSquares] = useState(generateEmptyBoard());
   const [autoXisOn, setAutoXisOn] = useState(false);
   const [winner, setWinner] = useState(false);
@@ -153,17 +164,6 @@ function Board() {
     setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
     setSquares(Array(newLength).fill(Array(newLength).fill(Values.EMPTY)))
   }
-
-  // function startGame() {
-  //   const board = selectBoard();
-  //   setBoardChoice(board);
-  //   setSolutionIndexPairs(allBoards[boardChoice].solutionIndexPairs);
-  //   setRegions(allBoards[boardChoice].regions);
-  //   setBoardLength(allBoards[boardChoice].solutionIndexPairs.length);
-  //   setSquares(Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY)))
-
-  //   // generateEmptyBoard();
-  // }
 
   function generateEmptyBoard() {
     return Array(boardLength).fill(Array(boardLength).fill(Values.EMPTY));
@@ -259,20 +259,6 @@ function Board() {
   };
 
   function handleNewGameButton() {
-    // // console.log("Current board is ", boardChoice);
-    // let newBoard = selectBoard();
-    // setBoardChoice(newBoard);
-    // let newGame = allBoards[newBoard];
-    // setSolutionIndexPairs(newGame.solutionIndexPairs);
-    // let newRegion = newGame.regions;
-    // setRegions(newRegion);
-    // // console.log(regions);
-    // // let newRegion = newGame.regions;
-    // setBoardLength(newRegion.length);
-
-    // // setRegions(allBoards[newBoard].regions);
-    // // console.log("boardlength = ", boardLength);
-    // setSquares(generateEmptyBoard());
     selectBoard();
   };
 
