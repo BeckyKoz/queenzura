@@ -21,6 +21,12 @@ function Board() {
     MANUALX: "x",
   });
 
+  const Makers = Object.freeze({
+    MADDY: "designed by Maddy",
+    AUTO: "automatically generated",
+    MANUAL: "designed manually",
+  });
+
   const allBoards = [
     {
       solutionIndexPairs: [
@@ -39,6 +45,7 @@ function Board() {
         [3, 3, 3, 3, 3, 6],
         [3, 3, 3, 6, 6, 6],
       ],
+      madeBy: Makers.MANUAL,
     },
     {
       solutionIndexPairs: [
@@ -49,7 +56,6 @@ function Board() {
         {r: 4, c: 2},
         {r: 5, c: 4},
         {r: 6, c: 6},
-
       ], 
       regions: [
         [1, 1, 3, 3, 4, 4, 7],
@@ -60,6 +66,7 @@ function Board() {
         [3, 3, 3, 6, 6, 6, 7],
         [7, 7, 7, 7, 7, 7, 7],
       ],
+      madeBy: Makers.MANUAL,
     },
     {
       solutionIndexPairs: [
@@ -80,6 +87,7 @@ function Board() {
         [4, 4, 4, 3, 6, 6, 6],
         [4, 3, 3, 3, 6, 5, 5],
       ],
+      madeBy: Makers.MANUAL,
     },
     {
       solutionIndexPairs: [
@@ -100,6 +108,7 @@ function Board() {
         [1, 1, 1, 6, 3, 3, 3],
         [1, 1, 1, 6, 3, 3, 3],
       ],
+      madeBy: Makers.MANUAL,
     },
     {
       solutionIndexPairs: [
@@ -120,6 +129,7 @@ function Board() {
         [5, 5, 5, 1, 5, 1, 1],
         [5, 5, 5, 5, 5, 1, 1],
       ],
+      madeBy: Makers.MANUAL,
     },
     {
       solutionIndexPairs: [
@@ -136,6 +146,7 @@ function Board() {
         [1, 1, 1, 1, 3],
         [1, 1, 1, 1, 1],
       ],
+      madeBy: Makers.MADDY,
     },
     {
       solutionIndexPairs: [
@@ -154,6 +165,7 @@ function Board() {
         [2, 2, 2, 4, 2, 2],
         [2, 2, 2, 2, 2, 2],
       ],
+      madeBy: Makers.MADDY,
     },
     {
       solutionIndexPairs: [
@@ -165,7 +177,6 @@ function Board() {
         {r: 5, c: 3},
         {r: 6, c: 6},
         {r: 7, c: 4},
-
       ], 
       regions: [
         [2, 2, 2, 7, 7, 7, 7, 7],
@@ -177,9 +188,141 @@ function Board() {
         [3, 3, 3, 7, 7, 5, 5, 7],
         [3, 3, 3, 8, 8, 5, 5, 5],
       ],
+      madeBy: Makers.MADDY,
     },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 3},
+        {r: 1, c: 6},
+        {r: 2, c: 4},
+        {r: 3, c: 0},
+        {r: 4, c: 2},
+        {r: 5, c: 5},
+        {r: 6, c: 1},
+      ], 
+      regions: [
+        [4, 3, 3, 3, 7, 2, 2],
+        [4, 7, 7, 7, 7, 2, 2],
+        [4, 7, 7, 7, 7, 2, 2],
+        [4, 1, 1, 1, 1, 1, 1],
+        [5, 6, 6, 1, 1, 1, 1],
+        [5, 6, 6, 1, 1, 1, 1],
+        [5, 5, 6, 1, 1, 1, 1],
+      ],
+      madeBy: Makers.MADDY,
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 2},
+        {r: 2, c: 5},
+        {r: 3, c: 3},
+        {r: 4, c: 1},
+        {r: 5, c: 4},
+        {r: 6, c: 6},
+      ], 
+      regions: [
+        [5, 2, 2, 2, 2, 2, 2],
+        [5, 4, 4, 2, 6, 6, 6],
+        [1, 3, 2, 2, 2, 2, 6],
+        [1, 3, 3, 3, 2, 2, 6],
+        [1, 1, 3, 3, 2, 2, 6],
+        [7, 7, 7, 7, 7, 6, 6],
+        [7, 7, 7, 7, 6, 6, 6],
 
+      ],
+      madeBy: Makers.MADDY,
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 5},
+        {r: 1, c: 1},
+        {r: 2, c: 7},
+        {r: 3, c: 2},
+        {r: 4, c: 0},
+        {r: 5, c: 3},
+        {r: 6, c: 6},
+        {r: 7, c: 4},
+      ], 
+      regions: [
+        [2, 2, 2, 7, 7, 7, 7, 7],
+      ],
+      madeBy: Makers.MADDY,
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 2},
+        {r: 1, c: 5},
+        {r: 2, c: 3},
+        {r: 3, c: 1},
+        {r: 4, c: 4},
+        {r: 5, c: 0},
+      ], 
+      regions: [
+        [3, 4, 1, 1, 1, 1],
+        [3, 4, 1, 1, 5, 5],
+        [3, 4, 3, 2, 5, 5],
+        [3, 4, 3, 2, 2, 3],
+        [3, 3, 3, 6, 6, 3],
+        [3, 3, 3, 3, 3, 3],
+      ],
+      madeBy: Makers.MADDY,
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 4},
+        {r: 2, c: 1},
+        {r: 3, c: 3},
+        {r: 4, c: 5},
+        {r: 5, c: 2},
+        {r: 6, c: 7},
+        {r: 7, c: 9},
+        {r: 8, c: 6},
+        {r: 9, c: 8},
+      ], 
+      regions: [
+        [2, 1, 4, 5, 5, 5, 5, 5, 5, 5],
+        [2, 1, 4, 5, 5, 7, 7, 7, 7, 7],
+        [4, 1, 4, 4, 7, 7, 7, 7, 7, 7],
+        [4, 4, 4, 4, 7, 7, 7, 7, 7, 7],
+        [4, 4, 3, 10, 10, 10, 7, 7, 7, 7],
+        [3, 3, 3, 10, 10, 10, 7, 7, 7, 7],
+        [10, 10, 10, 10, 10, 6, 6, 7, 8, 8],
+        [10, 10, 10, 10, 10, 6, 6, 8, 8, 8],
+        [10, 10, 10, 10, 10, 6, 6, 9, 9, 8],
+        [10, 10, 10, 10, 10, 9, 9, 9, 9, 8],
 
+      ],
+      madeBy: Makers.MADDY,
+    },
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 0},
+        {r: 1, c: 2},
+        {r: 2, c: 4},
+        {r: 3, c: 1},
+        {r: 4, c: 3},
+        {r: 5, c: 7},
+        {r: 6, c: 5},
+        {r: 7, c: 8},
+        {r: 8, c: 6},
+        {r: 9, c: 9},
+      ], 
+      regions: [
+        [1, 1, 1, 2, 2, 7, 7, 7, 7, 7],
+        [1, 3, 3, 3, 2, 7, 7, 7, 7, 7],
+        [3, 3, 3, 3, 2, 7, 7, 7, 7, 7],
+        [3, 5, 5, 3, 7, 7, 7, 7, 7, 7],
+        [5, 5, 5, 4, 7, 7, 7, 7, 7, 7],
+        [7, 7, 7, 7, 7, 8, 8, 7, 9, 9],
+        [7, 7, 7, 7, 7, 8, 8, 9, 9, 10],
+        [7, 7, 7, 7, 7, 6, 6, 9, 9, 10],
+        [7, 7, 7, 7, 7, 6, 6, 10, 10, 10],
+        [7, 7, 7, 7, 7, 6, 10, 10, 10, 10],
+      ],
+      madeBy: Makers.MADDY,
+    },
 
 ];
   const [boardChoice, setBoardChoice] = useState(0);
@@ -391,10 +534,12 @@ function Board() {
     <>
       <div className="status">&nbsp;{winner ? "You win!" : ""}</div>
       <div className="buttons">
-          <ClearButton />
-          <AutoXButton />
-          <NewGameButton />
-        </div>
+        <ClearButton />
+        <AutoXButton />
+        <NewGameButton />
+      </div>
+      <div className="madeBy">&nbsp;{"This board was " + allBoards[boardChoice].madeBy}</div>
+
       <div className="gameBoard"> 
         {squares.map((row, r) => (
           <div className="board-row">
@@ -408,8 +553,6 @@ function Board() {
             ))}
           </div>
         ))}
-
-
       </div>
     </>
   ) 
