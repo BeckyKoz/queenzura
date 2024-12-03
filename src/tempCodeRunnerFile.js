@@ -1,5 +1,4 @@
-    // let result = generateQueens(num);
-    // // for 
-    // for (let row of result) {
-    //     console.log(row);
-    // }
+// regionArray = addQueensToRegionsArray();
+// console.log("adding queens to regions: ");
+// console.log("    ", regionArray);
+// generatedBoard.regions = regionArray;

@@ -6,6 +6,7 @@ const Values = Object.freeze({
   });
 
 let queens = [];
+let regionArray = [];
 
 const generatedBoard = 
     {
@@ -20,16 +21,16 @@ function generateRandomIndex(boardLen) {
     let ind = Math.floor(Math.random() * boardLen);
     return ind;
 }
+
 // helper function to return solution index pairs
 function returnGeneratedSolutionIndexPairs(genQueens) {
     let indexPairsArray = [];
-    console.log("test");
+
     for (let i = 0; i < genQueens.length; i++) {
+        let indexPair = {};
         let ind = genQueens[i].indexOf(Values.QUEEN);
-        console.log(genQueens[i]);
-        let indexPair = { r: i, c: ind };
-        console.log("ind =", ind);
-        console.log("indexPair =", indexPair);
+        indexPair.r = i;
+        indexPair.c = ind;
         indexPairsArray.push(indexPair);
     } 
     return indexPairsArray;
@@ -105,11 +106,41 @@ function generateQueenBoard(num) {
     };
 };
 
-generateQueenBoard(6);
-for (let row of queens) {
-    console.log(row);
+function generateEmptyRegionArray(boardLen) {
+    for (let i = 0; i < boardLen; i++) {
+        regionArray.push([]);
+        for (let j = 0; j < boardLen; j++) {
+            regionArray[i].push(0);
+        }
+    }
 }
-let arr = returnGeneratedSolutionIndexPairs(queens);
-console.log(arr);
-generatedBoard.solutionIndexPairs = arr;
-console.log(generatedBoard.solutionIndexPairs);
+
+function addQueensToRegionsArray() {
+    for (let obj of generatedBoard.solutionIndexPairs) {
+        let row = obj.r;
+        let col = obj.c;
+        regionArray[row][col] = Values.QUEEN;
+    }
+    return regionArray;
+    }
+
+function createWorkingQueens(boardLen) {
+
+    // create an given size array with zeroes and populate with queens
+    generateQueenBoard(boardLen);
+
+    // create an object that contains ordered index pairs of all queen locations
+    let arr = returnGeneratedSolutionIndexPairs(queens);
+    generatedBoard.solutionIndexPairs = arr;
+    
+    // create empty regions array of correct board length
+    generateEmptyRegionArray(boardLen);
+    generatedBoard.regions = regionArray;
+
+    // add queens to regions array
+    regionArray = addQueensToRegionsArray();
+    generatedBoard.regions = regionArray;
+}
+
+createWorkingQueens(6);
+console.log(generatedBoard);
