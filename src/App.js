@@ -332,6 +332,26 @@ function Board() {
     },
 
 ];
+  const generatedBoard = [
+    {
+      solutionIndexPairs: [
+        {r: 0, c: 2},
+        {r: 1, c: 2},
+        {r: 2, c: 2},
+        {r: 3, c: 2},
+        {r: 4, c: 2},
+      ],
+      regions: [
+        [, , , , ],
+        [, , , , ],
+        [, , , , ],
+        [, , , , ],
+        [, , , , ],
+      ],
+      madeBy: Makers.AUTO,
+
+    }
+  ];
   const [boardChoice, setBoardChoice] = useState(0);
   const [solutionIndexPairs, setSolutionIndexPairs] = useState(allBoards[boardChoice].solutionIndexPairs);
   const [regions, setRegions] = useState(allBoards[boardChoice].regions);  
@@ -358,6 +378,56 @@ function Board() {
 
   function generateEmptyBoard(boardLen) {
     return Array(boardLen).fill(Array(boardLen).fill(Values.EMPTY));
+  }
+
+  function generateBoard() {
+    const len = allBoards.length;
+    const choice = Math.floor(Math.random() * len);
+    setBoardChoice(choice);
+    const newLength = allBoards[choice].regions.length;
+    setRegions(allBoards[choice].regions);
+    setBoardLength(newLength);
+    setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
+    setSquares(generateEmptyBoard(newLength));
+  }
+
+  function generateRandomIndex(boardLen) {
+    let ind = Math.floor(Math.random() * boardLen);
+    return ind;
+  }
+
+  function generateQueens(boardLen) { // boardlength
+    let queens = [];
+    for (let i = 0; i < boardLen; i++) {
+      queens.push([]);
+      for (let j = 0; j < boardLen; j++) {
+        queens[i].push(0);
+      }
+    }
+    for (let row of queens) {
+      console.log(row);
+    }
+    // return queens;
+  
+
+    // find empty spot, get random index, put in a queen
+    // calculate auto-x-es
+    // repeat boardLen times
+    // if no remaining spaces, restart and try again
+    let queenCount = 0;
+    for (let i = 0; i < boardLen; i++) {
+      let ind = generateRandomIndex(boardLen);
+      if (queens[i][ind] === 0) { // find empty spot
+          queens[i][ind] = Values.QUEEN;
+          // calculate auto-x-es
+          queenCount += 1;
+          addAutoX(i, ind, queens);
+      };
+      console.log(queenCount);
+      for (let row of queens) {
+        console.log(row);
+      }
+    };
   }
 
   // helper function to implement automatic X's when adding a queen
@@ -453,6 +523,11 @@ function Board() {
     selectBoard();
   };
 
+  function handleGenerateBoardButton() {
+    generateBoard();
+    generateQueens(boardLength);
+    // alert("generate");
+  }
 
   function handleClick(r, c) {
     const nextSquares = copySquaresState(squares);
@@ -526,6 +601,16 @@ function Board() {
     )
   };
 
+  function GenerateBoardButton() {
+    return (
+      <button 
+        className={'generate'} 
+        onClick={() => handleGenerateBoardButton()}>
+          Generate a new board
+      </button>
+    )
+  };
+
 
   function AutoXButton() {
     return (
@@ -544,6 +629,9 @@ function Board() {
         <ClearButton />
         <AutoXButton />
         <NewGameButton />
+      </div>
+      <div className="generate">
+        <GenerateBoardButton />
       </div>
       <div className="madeBy">&nbsp;{"This board was " + allBoards[boardChoice].madeBy}</div>
 
