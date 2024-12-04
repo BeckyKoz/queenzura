@@ -5,9 +5,6 @@ const Values = Object.freeze({
     MANUALX: "x",
   });
 
-let queens = [];
-let regionArray = [];
-
 const generatedBoard = 
     {
       solutionIndexPairs: [
@@ -16,6 +13,9 @@ const generatedBoard =
       ],
     //  madeBy: Makers.AUTO,
     };
+    
+let queens = [];
+let regionArray = [];
 
 function generateRandomIndex(boardLen) {
     let ind = Math.floor(Math.random() * boardLen);
@@ -25,7 +25,6 @@ function generateRandomIndex(boardLen) {
 // helper function to return solution index pairs
 function returnGeneratedSolutionIndexPairs(genQueens) {
     let indexPairsArray = [];
-
     for (let i = 0; i < genQueens.length; i++) {
         let indexPair = {};
         let ind = genQueens[i].indexOf(Values.QUEEN);

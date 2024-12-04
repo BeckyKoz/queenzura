@@ -95,7 +95,7 @@ ul {
 }
 
 .region2 {
-  background-color: rgb(255, 129, 79);
+  background-color: rgb(255, 176, 79);
 }
 
 .region3 {
@@ -130,7 +130,9 @@ ul {
   background-color: rgb(255, 186, 68);
 }
 
-
+.region11 {
+  background-color: rgb(68, 239, 255);
+}
 
 .status {
   margin-bottom: 10px;

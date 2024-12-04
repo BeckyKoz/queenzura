@@ -331,33 +331,23 @@ function Board() {
       madeBy: Makers.MADDY,
     },
 
-];
-  const generatedBoard = [
+  ];
+  const generatedBoard = 
     {
       solutionIndexPairs: [
-        {r: 0, c: 2},
-        {r: 1, c: 2},
-        {r: 2, c: 2},
-        {r: 3, c: 2},
-        {r: 4, c: 2},
       ],
       regions: [
-        [, , , , ],
-        [, , , , ],
-        [, , , , ],
-        [, , , , ],
-        [, , , , ],
       ],
-      madeBy: Makers.AUTO,
+     madeBy: Makers.AUTO,
+    };
 
-    }
-  ];
   const [boardChoice, setBoardChoice] = useState(0);
   const [solutionIndexPairs, setSolutionIndexPairs] = useState(allBoards[boardChoice].solutionIndexPairs);
   const [regions, setRegions] = useState(allBoards[boardChoice].regions);  
   const [boardLength, setBoardLength] = useState(allBoards[boardChoice].regions.length);
   const [squares, setSquares] = useState(generateEmptyBoard(boardLength));
   const [autoXisOn, setAutoXisOn] = useState(false);
+  const [revealQueensIsOn, setRevealQueensIsOn] = useState(false);
   const [winner, setWinner] = useState(false);
 
   useEffect (() => {
@@ -394,40 +384,6 @@ function Board() {
   function generateRandomIndex(boardLen) {
     let ind = Math.floor(Math.random() * boardLen);
     return ind;
-  }
-
-  function generateQueens(boardLen) { // boardlength
-    let queens = [];
-    for (let i = 0; i < boardLen; i++) {
-      queens.push([]);
-      for (let j = 0; j < boardLen; j++) {
-        queens[i].push(0);
-      }
-    }
-    for (let row of queens) {
-      console.log(row);
-    }
-    // return queens;
-  
-
-    // find empty spot, get random index, put in a queen
-    // calculate auto-x-es
-    // repeat boardLen times
-    // if no remaining spaces, restart and try again
-    let queenCount = 0;
-    for (let i = 0; i < boardLen; i++) {
-      let ind = generateRandomIndex(boardLen);
-      if (queens[i][ind] === 0) { // find empty spot
-          queens[i][ind] = Values.QUEEN;
-          // calculate auto-x-es
-          queenCount += 1;
-          addAutoX(i, ind, queens);
-      };
-      console.log(queenCount);
-      for (let row of queens) {
-        console.log(row);
-      }
-    };
   }
 
   // helper function to implement automatic X's when adding a queen
@@ -496,6 +452,15 @@ function Board() {
     };
   };
 
+  function revealQueens(nextSquares) {
+    for (let queen of solutionIndexPairs) {
+      let row = queen.r;
+      let col = queen.c;
+      nextSquares[row][col] = Values.QUEEN;
+    }
+    setSquares(nextSquares);
+  }
+
   function copySquaresState(squares) {
     const nextSquares = [];
     for (let row of squares) {
@@ -507,7 +472,7 @@ function Board() {
   function handleAutoXButton() {
     const nextSquares = copySquaresState(squares);
 
-    const newAutoX = !autoXisOn; // this is the copy of state
+    const newAutoX = !autoXisOn; // this is the copy of the new state
     setAutoXisOn(newAutoX);
 
     if (newAutoX === false) {
@@ -520,13 +485,28 @@ function Board() {
   };
 
   function handleNewGameButton() {
+    setRevealQueensIsOn(false);
     selectBoard();
   };
 
   function handleGenerateBoardButton() {
+    setRevealQueensIsOn(false);
     generateBoard();
-    generateQueens(boardLength);
-    // alert("generate");
+  }
+
+  function handleRevealQueensButton() {
+    const nextSquares = copySquaresState(squares);
+
+    const newRevealQueensIsOn = !revealQueensIsOn; // this is the copy of state
+    setRevealQueensIsOn(newRevealQueensIsOn);
+
+    if (newRevealQueensIsOn === false) {
+      selectBoard();
+    } else {
+      revealQueens(nextSquares);
+    };
+    setSquares(nextSquares);
+    return;
   }
 
   function handleClick(r, c) {
@@ -601,6 +581,17 @@ function Board() {
     )
   };
 
+  function RevealQueensButton() {
+    return (
+      <button 
+        className={'reveal'} 
+        onClick={() => handleRevealQueensButton()}>
+          {!revealQueensIsOn ? "Reveal Queens" : "Click 'New Game' to play again!"}
+      </button>
+    )
+  };
+
+
   function GenerateBoardButton() {
     return (
       <button 
@@ -629,9 +620,10 @@ function Board() {
         <ClearButton />
         <AutoXButton />
         <NewGameButton />
-      </div>
-      <div className="generate">
-        <GenerateBoardButton />
+        {/* <GenerateBoardButton /> */}
+        {!revealQueensIsOn && <RevealQueensButton />}
+
+
       </div>
       <div className="madeBy">&nbsp;{"This board was " + allBoards[boardChoice].madeBy}</div>
 
