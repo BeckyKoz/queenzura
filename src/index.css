@@ -52,6 +52,8 @@ ul {
   margin: auto;
 }
 
+
+
 .buttons {
   margin: 1em;
   /* font: ; */
@@ -147,3 +149,21 @@ ul {
 .game-info {
   margin-left: 20px;
 }
+
+.borderTop {
+  border-top: 2.5px black solid;
+}
+
+.borderLeft {
+  border-left: 2.5px black solid;
+
+}
+
+.borderRight {
+  border-right: 2.5px black solid;
+}
+
+.borderBottom {
+  border-bottom: 2.5px black solid;
+}
+

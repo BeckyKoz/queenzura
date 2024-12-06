@@ -1,11 +1,28 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
-function Square({value, region, onSquareClick, idkey}) {
+function Square({value, region, regionTop, regionLeft, regionRight, regionBottom, onSquareClick, idkey}) {
+  let borderClasses = "";
+  // if (region) {
+  //   borderClasses = " borderTop ";
+  if (region !== regionTop) {
+    borderClasses += " borderTop "
+  }
+  if (region !== regionLeft) {
+    borderClasses += " borderLeft "
+  }
+  if (region !== regionRight) {
+    borderClasses += " borderRight "
+  }
+  if (region !== regionBottom) {
+    borderClasses += " borderBottom "
+  }
+
+
   return (
     <button 
       key={`id${idkey}`}
-      className={`square region${region}`} 
+      className={`square region${region} ${borderClasses}`} 
       onClick={onSquareClick}>
         {value} 
     </button>
@@ -24,7 +41,7 @@ function Board() {
   const Makers = Object.freeze({
     MADDY: "designed by Maddy",
     AUTO: "automatically generated",
-    MANUAL: "designed manually",
+    MANUAL: "created manually",
   });
 
   const allBoards = [
@@ -371,14 +388,7 @@ function Board() {
   }
 
   function generateBoard() {
-    const len = allBoards.length;
-    const choice = Math.floor(Math.random() * len);
-    setBoardChoice(choice);
-    const newLength = allBoards[choice].regions.length;
-    setRegions(allBoards[choice].regions);
-    setBoardLength(newLength);
-    setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
-    setSquares(generateEmptyBoard(newLength));
+    
   }
 
   function generateRandomIndex(boardLen) {
@@ -565,7 +575,7 @@ function Board() {
     return (
       <button 
         className={'clearboard'} 
-        onClick={() => setSquares(generateEmptyBoard(boardLength))}>
+        onClick={() => handleClearButton()}>
           Clear Board
       </button>
     )
@@ -602,6 +612,10 @@ function Board() {
     )
   };
 
+  function handleClearButton() {
+    setSquares(generateEmptyBoard(boardLength));
+    setRevealQueensIsOn(false);
+  }
 
   function AutoXButton() {
     return (
@@ -635,6 +649,10 @@ function Board() {
                 key={`${r}+${c}`}
                 value={squares[r][c] === Values.AUTOX ? squares[r][c].toLowerCase() : squares[r][c]}
                 region={regions[r][c]} 
+                regionTop={(r > 0) ? regions[r-1][c] : false}
+                regionLeft={(c > 0) ? regions[r][c-1] : false}
+                regionRight={(c < boardLength - 1) ? regions[r][c+1] : false}
+                regionBottom={(r < boardLength - 1) ? regions[r+1][c] : false}
                 onSquareClick={() => handleClick(r, c)} 
               />
             ))}
