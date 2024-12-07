@@ -1,5 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
+import { createWorkingQueens } from './generate';
 
 function Square({value, region, regionTop, regionLeft, regionRight, regionBottom, onSquareClick, idkey}) {
   let borderClasses = "";
@@ -17,8 +18,6 @@ function Square({value, region, regionTop, regionLeft, regionRight, regionBottom
   if (region !== regionBottom) {
     borderClasses += " borderBottom "
   }
-
-
   return (
     <button 
       key={`id${idkey}`}
@@ -396,6 +395,15 @@ function Board() {
     return ind;
   }
 
+  function generateRandomBoardLength() {
+    const boardLengthOptions = [5, 6, 7, 8, 9, 10, 11];
+    const len = boardLengthOptions.length;
+    let ind = Math.floor(Math.random() * len);
+    return boardLengthOptions[ind];
+  }
+
+  // console.log(generateRandomBoardLength());
+
   // helper function to implement automatic X's when adding a queen
   function addAutoX(r, c, nextSquares) { 
     function updateEmptyToAutoX(r, c) {
@@ -500,8 +508,13 @@ function Board() {
   };
 
   function handleGenerateBoardButton() {
+    let newLength = generateRandomBoardLength();
+    alert(newLength);
+    setBoardLength(newLength);
+    setSquares(generateEmptyBoard(newLength));
     setRevealQueensIsOn(false);
-    generateBoard();
+    createWorkingQueens(newLength);
+    // generateBoard();
   }
 
   function handleRevealQueensButton() {
@@ -581,6 +594,11 @@ function Board() {
     )
   };
 
+  function handleClearButton() {
+    setSquares(generateEmptyBoard(boardLength));
+    setRevealQueensIsOn(false);
+  }
+
   function NewGameButton() {
     return (
       <button 
@@ -601,7 +619,6 @@ function Board() {
     )
   };
 
-
   function GenerateBoardButton() {
     return (
       <button 
@@ -612,10 +629,6 @@ function Board() {
     )
   };
 
-  function handleClearButton() {
-    setSquares(generateEmptyBoard(boardLength));
-    setRevealQueensIsOn(false);
-  }
 
   function AutoXButton() {
     return (
@@ -634,8 +647,9 @@ function Board() {
         <ClearButton />
         <AutoXButton />
         <NewGameButton />
-        {/* <GenerateBoardButton /> */}
         {!revealQueensIsOn && <RevealQueensButton />}
+        <GenerateBoardButton />
+
 
 
       </div>

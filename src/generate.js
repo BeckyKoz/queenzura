@@ -13,7 +13,7 @@ const generatedBoard =
       ],
     //  madeBy: Makers.AUTO,
     };
-    
+
 let queens = [];
 let regionArray = [];
 
@@ -124,7 +124,7 @@ function addQueensToRegionsArray() {
     }
 
 function createWorkingQueens(boardLen) {
-
+    alert("test1");
     // create an given size array with zeroes and populate with queens
     generateQueenBoard(boardLen);
 
@@ -139,7 +139,9 @@ function createWorkingQueens(boardLen) {
     // add queens to regions array
     regionArray = addQueensToRegionsArray();
     generatedBoard.regions = regionArray;
+    console.log(generatedBoard);
 }
 
-createWorkingQueens(6);
-console.log(generatedBoard);
+// createWorkingQueens(6);
+
+export { createWorkingQueens };
