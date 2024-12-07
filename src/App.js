@@ -1,11 +1,9 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { createWorkingQueens } from './generate';
+import { createWorkingQueens, generateRegionsFromQueens } from './generate';
 
 function Square({value, region, regionTop, regionLeft, regionRight, regionBottom, onSquareClick, idkey}) {
   let borderClasses = "";
-  // if (region) {
-  //   borderClasses = " borderTop ";
   if (region !== regionTop) {
     borderClasses += " borderTop "
   }
@@ -500,17 +498,17 @@ function Board() {
 
   function handleGenerateBoardButton() {
     let newLength = generateRandomBoardLength();
-    alert(newLength);
     setBoardLength(newLength);
     setSquares(generateEmptyBoard(newLength));
     setRevealQueensIsOn(false);
     let [reg, solIndexPairs] = createWorkingQueens(newLength);
     generatedBoard.regions = reg;
     generatedBoard.solutionIndexPairs = solIndexPairs
-    console.log(generatedBoard);
-    setRegions(generatedBoard.regions);
     setSolutionIndexPairs(generatedBoard.solutionIndexPairs);
     setBoardOrigin(Makers.AUTO);
+    let newRegions = generateRegionsFromQueens(newLength, reg);
+    generatedBoard.regions = newRegions;
+    setRegions(generatedBoard.regions);
   }
 
   function handleRevealQueensButton() {
@@ -647,7 +645,6 @@ function Board() {
         <GenerateBoardButton />
       </div>
       <div className="madeBy">&nbsp;{`This board was ${boardOrigin}`}</div>
-
       <div className="gameBoard"> 
         {squares.map((row, r) => (
           <div className="board-row">

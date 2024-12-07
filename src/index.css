@@ -52,7 +52,9 @@ ul {
   margin: auto;
 }
 
-
+.generate {
+  margin: 1em;
+}
 
 .buttons {
   margin: 1em;
@@ -61,7 +63,7 @@ ul {
 
 .clearboard {
   margin: 1em;
-}
+} 
 
 .autoXButton {
   margin: 1em;
@@ -69,7 +71,7 @@ ul {
 
 .newgame {
   margin: 1em;
-}
+} 
 
 .square {
   background: #fff;

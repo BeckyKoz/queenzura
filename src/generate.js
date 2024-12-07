@@ -140,10 +140,31 @@ function createWorkingQueens(boardLen) {
     // add queens to regions array
     regionArray = addQueensToRegionsArray();
     generatedBoard.regions = regionArray;
-    console.log(generatedBoard);
     return [generatedBoard.regions, generatedBoard.solutionIndexPairs];
 }
 
-// createWorkingQueens(6);
+function setNewRegion(array, regionNum) {
+    for (let row of array) {
+        if (row[0] === 0) {
+            row[0] = regionNum;
+        }
+    }
+}
 
-export { createWorkingQueens };
+function assignQueenStartingRegions() {
+    let counter = 1;
+     for (let obj of generatedBoard.solutionIndexPairs) {
+        let row = obj.r;
+        let col = obj.c;
+        generatedBoard.regions[row][col] = counter;
+        counter++
+        }
+}
+
+function generateRegionsFromQueens(newLen, newRegions) {
+    let startRegions = newRegions;
+    assignQueenStartingRegions(startRegions)
+    return startRegions;
+}
+
+export { createWorkingQueens, generateRegionsFromQueens };
