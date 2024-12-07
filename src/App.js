@@ -468,6 +468,16 @@ function Board() {
     setSquares(nextSquares);
   }
 
+  function checkNeighborRegions(r, c) {
+    let reg = regions[r][c];
+    // regionTop={(r > 0) ? regions[r-1][c] : false}
+    // regionLeft={(c > 0) ? regions[r][c-1] : false}
+    // regionRight={(c < boardLength - 1) ? regions[r][c+1] : false}
+    // regionBottom={(r < boardLength - 1) ? regions[r+1][c] : false}
+
+    
+  }
+
   function copySquaresState(squares) {
     const nextSquares = [];
     for (let row of squares) {

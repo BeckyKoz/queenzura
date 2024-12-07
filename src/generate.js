@@ -143,28 +143,50 @@ function createWorkingQueens(boardLen) {
     return [generatedBoard.regions, generatedBoard.solutionIndexPairs];
 }
 
-function setNewRegion(array, regionNum) {
-    for (let row of array) {
-        if (row[0] === 0) {
-            row[0] = regionNum;
+function setFirstRegion() {
+    let regionsArray = generatedBoard.regions;
+    let solutionIndexPairs = generatedBoard.solutionIndexPairs;
+
+    const len = regionsArray.length;
+    const ind = generateRandomIndex(len);
+    const pair = solutionIndexPairs[ind];
+
+    let r = pair.r;
+    const c = pair.c;
+    const queenNum = regionsArray[r][c];
+    if (r > (len)/2) {
+        for (let i = 0; i < 3; i++) {
+            regionsArray[r][c] = queenNum;
+            r -= 1;
+        }
+    } else {
+        for (let i = 0; i < 3; i++) {
+
+            regionsArray[r][c] = queenNum;
+            r += 1;
         }
     }
+    // addAutoX(pair.r, pair.c, regionsArray, len);
+    generatedBoard.regions = regionsArray;
+    console.log(regionsArray);
+    return regionsArray;
 }
 
 function assignQueenStartingRegions() {
     let counter = 1;
-     for (let obj of generatedBoard.solutionIndexPairs) {
+    for (let obj of generatedBoard.solutionIndexPairs) {
         let row = obj.r;
         let col = obj.c;
         generatedBoard.regions[row][col] = counter;
         counter++
-        }
+    }
 }
 
 function generateRegionsFromQueens(newLen, newRegions) {
     let startRegions = newRegions;
-    assignQueenStartingRegions(startRegions)
+    assignQueenStartingRegions(startRegions);
+    setFirstRegion();
     return startRegions;
 }
 
-export { createWorkingQueens, generateRegionsFromQueens };
+export { createWorkingQueens, generateRegionsFromQueens, setFirstRegion };
