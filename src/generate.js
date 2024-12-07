@@ -124,7 +124,8 @@ function addQueensToRegionsArray() {
     }
 
 function createWorkingQueens(boardLen) {
-    alert("test1");
+    queens = [];
+    regionArray = [];
     // create an given size array with zeroes and populate with queens
     generateQueenBoard(boardLen);
 
@@ -140,6 +141,7 @@ function createWorkingQueens(boardLen) {
     regionArray = addQueensToRegionsArray();
     generatedBoard.regions = regionArray;
     console.log(generatedBoard);
+    return [generatedBoard.regions, generatedBoard.solutionIndexPairs];
 }
 
 // createWorkingQueens(6);

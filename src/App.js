@@ -348,7 +348,7 @@ function Board() {
     },
 
   ];
-  const generatedBoard = 
+  let generatedBoard = 
     {
       solutionIndexPairs: [
       ],
@@ -365,6 +365,7 @@ function Board() {
   const [autoXisOn, setAutoXisOn] = useState(false);
   const [revealQueensIsOn, setRevealQueensIsOn] = useState(false);
   const [winner, setWinner] = useState(false);
+  const [boardOrigin, setBoardOrigin] = useState(Makers.MANUAL);
 
   useEffect (() => {
     calculateWinner();
@@ -380,19 +381,11 @@ function Board() {
     setBoardLength(newLength);
     setSolutionIndexPairs(allBoards[choice].solutionIndexPairs);
     setSquares(generateEmptyBoard(newLength));
+    setBoardOrigin(allBoards[boardChoice].madeBy);
   }
 
   function generateEmptyBoard(boardLen) {
     return Array(boardLen).fill(Array(boardLen).fill(Values.EMPTY));
-  }
-
-  function generateBoard() {
-    
-  }
-
-  function generateRandomIndex(boardLen) {
-    let ind = Math.floor(Math.random() * boardLen);
-    return ind;
   }
 
   function generateRandomBoardLength() {
@@ -401,8 +394,6 @@ function Board() {
     let ind = Math.floor(Math.random() * len);
     return boardLengthOptions[ind];
   }
-
-  // console.log(generateRandomBoardLength());
 
   // helper function to implement automatic X's when adding a queen
   function addAutoX(r, c, nextSquares) { 
@@ -513,8 +504,13 @@ function Board() {
     setBoardLength(newLength);
     setSquares(generateEmptyBoard(newLength));
     setRevealQueensIsOn(false);
-    createWorkingQueens(newLength);
-    // generateBoard();
+    let [reg, solIndexPairs] = createWorkingQueens(newLength);
+    generatedBoard.regions = reg;
+    generatedBoard.solutionIndexPairs = solIndexPairs
+    console.log(generatedBoard);
+    setRegions(generatedBoard.regions);
+    setSolutionIndexPairs(generatedBoard.solutionIndexPairs);
+    setBoardOrigin(Makers.AUTO);
   }
 
   function handleRevealQueensButton() {
@@ -649,11 +645,8 @@ function Board() {
         <NewGameButton />
         {!revealQueensIsOn && <RevealQueensButton />}
         <GenerateBoardButton />
-
-
-
       </div>
-      <div className="madeBy">&nbsp;{"This board was " + allBoards[boardChoice].madeBy}</div>
+      <div className="madeBy">&nbsp;{`This board was ${boardOrigin}`}</div>
 
       <div className="gameBoard"> 
         {squares.map((row, r) => (
