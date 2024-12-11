@@ -469,7 +469,9 @@ function Board() {
   }
 
   function checkNeighborRegions(r, c) {
-    let reg = regions[r][c];
+    const regionsCopy = regions;
+    let reg = regionsCopy[r][c];
+
     // regionTop={(r > 0) ? regions[r-1][c] : false}
     // regionLeft={(c > 0) ? regions[r][c-1] : false}
     // regionRight={(c < boardLength - 1) ? regions[r][c+1] : false}
@@ -516,6 +518,7 @@ function Board() {
     generatedBoard.solutionIndexPairs = solIndexPairs
     setSolutionIndexPairs(generatedBoard.solutionIndexPairs);
     setBoardOrigin(Makers.AUTO);
+    
     let newRegions = generateRegionsFromQueens(newLength, reg);
     generatedBoard.regions = newRegions;
     setRegions(generatedBoard.regions);
