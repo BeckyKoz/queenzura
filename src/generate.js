@@ -148,11 +148,10 @@ function drawFirstRegion() {
     let solutionIndexPairs = generatedBoard.solutionIndexPairs;
 
     const len = regionsArray.length;
-    // const ind = generateRandomIndex(len);
-    const pair = solutionIndexPairs[0];
+    let pair = solutionIndexPairs[0];
 
     let r = pair.r;
-    const c = pair.c;
+    let c = pair.c;
     let queenNum = regionsArray[r][c];
     if (r > (len)/2) {
         for (let i = 0; i < 3; i++) {
@@ -168,17 +167,22 @@ function drawFirstRegion() {
     };
     addAutoX(pair.r, pair.c, regionsArray, len);
 
-    for (let i = 0; i < len; i++) {
-        for (let sq in regionsArray[i][c]) {
-            if (sq === Values.AUTOX) {
-                sq = queenNum;
-            }
-        }
+    // check for whether next queen is on the left or right of the current queen
+    let pair2 = solutionIndexPairs[1];
+    if (pair2.c > pair.c) {
+        checkBorderSquares(pair.r, pair.c+1, queenNum+1);
+    } else {
+        checkBorderSquares(pair.r, pair.c-1, queenNum+1);
+  
     }
-    generatedBoard.regions = regionsArray;
-    console.log(regionsArray);
-    checkBorderSquares(pair.r, pair.c, queenNum+1);
+    
+    console.log("current regionsArray =", regionsArray);
+
+    // checkBorderSquares(pair.r, pair.c, queenNum+1);
+
     // fillNextRegion(ind);
+    generatedBoard.regions = regionsArray;
+
     return regionsArray;
 }
 
@@ -207,13 +211,6 @@ function setFirstRegion() {
     };
     addAutoX(pair.r, pair.c, regionsArray, len);
 
-    for (let i = 0; i < len; i++) {
-        for (let sq in regionsArray[i][c]) {
-            if (sq === Values.AUTOX) {
-                sq = queenNum;
-            }
-        }
-    }
     generatedBoard.regions = regionsArray;
     console.log(regionsArray);
     checkBorderSquares(pair.r, pair.c, queenNum+1);
