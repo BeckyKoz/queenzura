@@ -1,3 +1,5 @@
+// WIP for board generation feature
+
 import Makers from './Makers.js';
 const Values = Object.freeze({
     EMPTY: " ",
@@ -264,9 +266,6 @@ function drawDoubleLineEliminationRegion(num) {
     generatedBoard.regions = regionsArray;
 }
 
-    
-
-
 // function drawRegions() {
 //     let regionsArray = generatedBoard.regions;
 //     let solutionIndexPairs = generatedBoard.solutionIndexPairs;
@@ -442,7 +441,6 @@ function drawDoubleLineEliminationRegion(num) {
 //     return regionsArray;
 // }
 
-
 function setFirstRegion() {
     let regionsArray = generatedBoard.regions;
     let solutionIndexPairs = generatedBoard.solutionIndexPairs;
@@ -517,7 +515,6 @@ function setFirstRegion() {
 
 //     return regionsArray;
 // }
-
 
 function checkBorderSquares(r, c, regionNum) { // check borders of a queen
     let regionsArray = generatedBoard.regions;
